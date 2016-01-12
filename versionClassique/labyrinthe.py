@@ -129,18 +129,18 @@ def coupInterdit(labyrinthe,direction,rangee):
 #      - met à jour la carte à jouer
 #      - met à jour la nouvelle direction interdite
 def jouerCarte(labyrinthe,direction,rangee):
-	if direction == 'Nord':
+	if direction == 'N':
 		labyrinthe['carteAmovible'] = decalageColonneEnHaut(labyrinthe['plateau'],rangee,labyrinthe['carteAmovible'])
-		labyrinthe['directionInterdite'] = 'Nord'
-	elif direction == 'Ouest':
+		labyrinthe['directionInterdite'] = 'S'
+	elif direction == 'O':
 		labyrinthe['carteAmovible'] = decalageLigneAGauche(labyrinthe['plateau'],rangee,labyrinthe['carteAmovible'])
-		labyrinthe['directionInterdite'] = 'Ouest'
-	elif direction == 'Sud':
+		labyrinthe['directionInterdite'] = 'E'
+	elif direction == 'S':
 		labyrinthe['carteAmovible'] = decalageColonneEnBas(labyrinthe['plateau'],rangee,labyrinthe['carteAmovible'])
-		labyrinthe['directionInterdite'] = 'Sud'
-	elif direction == 'Est':
+		labyrinthe['directionInterdite'] = 'N'
+	elif direction == 'E':
 		labyrinthe['carteAmovible'] = decalageLigneADroite(labyrinthe['plateau'],rangee,labyrinthe['carteAmovible'])
-		labyrinthe['directionInterdite'] = 'Est'
+		labyrinthe['directionInterdite'] = 'O'
 	else:
 		assert('direction inconnue')
 
@@ -196,7 +196,21 @@ def accessibleDist(labyrinthe,ligD,colD,ligA,colA):
 # 2 si action et rangee sont des entiers positifs
 # 3 dans tous les autres cas
 def executerActionPhase1(labyrinthe,action,rangee):
-    pass
+	if action != labyrinthe['directionInterdite']:
+		if type(action) == 'int' and type(rangee) == 'int':
+			return 2
+		else:
+		    if action == 'T':
+		    	tournerCarte(labyrinthe)
+		    	return 0
+		    elif action in ['N','E','S','O'] and rangee in [1,3,5] :
+		    		jouerCarte(labyrinthe,action,rangee)
+		    		return 0
+		    else:
+		    	assert('action inconnue')
+		    return 3
+	else:
+		return 1
 
 # verifie si le joueur courant peut accéder la case ligA,colA
 # si c'est le cas la fonction retourne une liste représentant un chemin possible
