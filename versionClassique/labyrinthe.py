@@ -19,11 +19,6 @@ dictionnaire
 	"rangéeInterdite" : rangée interdite si direction interdite
 '''
 
-'''
-	structure trésor
-		"id" : int # surement inutile
-		"position" : (int, int)
-'''
 
 # permet de créer un labyrinthe avec nbJoueurs joueurs, nbTresors trésors
 # chacun des joueurs aura au plus nbTresorMax à trouver
@@ -34,13 +29,44 @@ def Labyrinthe(nbJoueurs=2,nbTresors=24, nbTresorMax=0):
 	joueurs = Joueurs(nbJoueurs, nbTresors, nbTresorMax)
 	plateau = Matrice(7, 7)
 	
+	tresors = [i for i in range(nbTresors)]
+	cptTresorsAttr = 0
+	def initTresorsCarte():
+		if random.randint(0,11) == 0 and cptTresorsAttr < len(tresors):
+			cptTresorsAttr+=1
+			return tresors[cptTresorsAttr-1]
+
+
+	# cartes fixes
+	pions = [x for x in range(len(joueurs))]
+	#ligne 1
+	setVal(plateau,0,0,Carte(1,0,0,1,0,[1]))
+	setVal(plateau,0,2,Carte(1,0,0,0,initTresorsCarte()))
+	setVal(plateau,0,4,Carte(1,0,0,0,initTresorsCarte()))
+	setVal(plateau,0,6,Carte(1,1,0,0,0,[2]))
+	#ligne 2
+	setVal(plateau,2,0,Carte(0,0,0,1,initTresorsCarte()))
+	setVal(plateau,2,2,Carte(0,0,0,1,initTresorsCarte()))
+	setVal(plateau,2,4,Carte(1,0,0,0,initTresorsCarte()))
+	setVal(plateau,2,6,Carte(0,1,0,0,initTresorsCarte()))
+	#ligne 3
+	setVal(plateau,4,0,Carte(0,0,0,1,initTresorsCarte()))
+	setVal(plateau,4,2,Carte(0,0,1,0,initTresorsCarte()))
+	setVal(plateau,4,4,Carte(0,1,0,0,initTresorsCarte()))
+	setVal(plateau,4,6,Carte(0,1,0,0,initTresorsCarte()))
+	# ligne 4
+	setVal(plateau,6,0,Carte(0,1,0,1,0,[3] if len(joueurs)>=3 else []))
+	setVal(plateau,6,2,Carte(0,1,0,0,initTresorsCarte()))
+	setVal(plateau,6,4,Carte(0,1,0,0,initTresorsCarte()))
+	setVal(plateau,6,6,Carte(0,1,1,0,0,[4] if len(joueurs)==3 else []))
+
+
+
 	# remplir plateau avec cartes
 	# construire toutes les cartes 
 	
-	tresors = []
-	for i in range(nbTresors):
-		tresors.append({"id" : i, "position" : (random.randint(1, getNbColonnes(plateau) - 1), random.randint(1, getNbColonnes(plateau) - 1))})
-		
+	creerCartesAmovibles(cptTresorsAttr,nbTresors)
+	
 	joueurCourant = 1
 	phaseCourante = 1
 		

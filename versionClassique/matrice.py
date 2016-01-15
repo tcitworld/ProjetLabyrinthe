@@ -13,7 +13,7 @@ def Matrice(nbLignes,nbColonnes,valeurParDefaut=0):
         liste.append(valeurParDefaut)
         matrice={'Lignes':nbLignes,'Colonnes':nbColonnes,'valeurs': liste}
     return matrice
-#print(Matrice(7,7,0))
+print(Matrice(7,7,0))
     
 
 # retourne le nombre de ligne de la matrice
@@ -21,7 +21,7 @@ def getNbLignes(matrice):
     NbLignes=matrice['Lignes']
     return NbLignes
 
-#print(getNbLignes(Matrice(7,7,0)))
+print(getNbLignes(Matrice(7,7,0)))
     
     
 
@@ -29,19 +29,43 @@ def getNbLignes(matrice):
 def getNbColonnes(matrice):
     NbColonnes=matrice['Colonnes']
     return NbColonnes
-#print(getNbColonnes(Matrice(7,7,0)))
+print(getNbColonnes(Matrice(7,7,0)))
 
 # retourne la valeur qui se trouve à la ligne et la colonne passées en paramètres
 def getVal(matrice,ligne,colonne):
     valeur=matrice['valeurs'][(getNbColonnes(matrice)*ligne)+colonne]
     return valeur
-#print(getVal(Matrice(7,7,0),2,1))
+print(getVal(Matrice(7,7,0),2,1))
 
 # place la valeur à l'emplacement ligne colonne de la matrice
 def setVal(matrice,ligne,colonne,valeur):
     matrice['valeurs'][(getNbColonnes(matrice)*ligne)+colonne]=valeur
-    #return matrice
+print(setVal(Matrice(7,7,0),2,1,-1))
 
+
+
+# fonction utilitataire
+def afficheLigneSeparatrice(matrice,tailleCellule=4):
+    print()
+    for i in range(getNbColonnes(matrice)+1):
+        print('-'*tailleCellule+'+', end="")
+    print()
+
+# fonction d'affichage d'une matrice
+def afficheMatrice(matrice,tailleCellule=4):
+    nbColonnes=getNbColonnes(matrice)
+    nbLignes=getNbLignes(matrice)
+    print(' '*tailleCellule+'|',end='')
+    for i in range(nbColonnes):
+        print(str(i).center(tailleCellule)+'|',end='')
+    afficheLigneSeparatrice(matrice,tailleCellule)
+    for i in range(nbLignes):
+        print(str(i).rjust(tailleCellule)+'|',end='')
+        for j in range(nbColonnes):
+            print(str(getVal(matrice,i,j)).rjust(tailleCellule)+'|',end='')
+        afficheLigneSeparatrice(matrice,tailleCellule)
+    print()
+afficheMatrice(Matrice(7,7,0),tailleCellule=4)
 
 #------------------------------------------        
 # decalages A IMPLEMENTER
@@ -56,7 +80,14 @@ def decalageLigneAGauche(matrice, numLig, nouvelleValeur=0):
         nouvelleV=getVal(matrice,numLig,i+1)
         setVal(matrice,numLig,i,nouvelleV)
     setVal(matrice,numLig,getNbColonnes(matrice) - 1,nouvelleValeur)
-    return valeurRecuperee        
+    return valeurRecuperee
+matriceTemp = Matrice(7,7,0)
+setVal(matriceTemp,0,0,5)#juste pour tester
+print(decalageLigneAGauche(matriceTemp,0,1))
+print(matriceTemp)
+            
+        
+        
 
 # decale la ligne numLig d'une case vers la droite en insérant la nouvelleValeur
 # dans la case ainsi libérée
@@ -67,8 +98,9 @@ def decalageLigneADroite(matrice, numLig, nouvelleValeur=0):
         nouvelleVal=getVal(matrice,numLig,i-1)
         setVal(matrice,numLig,i,nouvelleVal)
     setVal(matrice,numLig,0,nouvelleValeur)
-    #print(matrice)#pour voir ma matrice apres le changement
+    print(matrice)#pour voir ma matrice apres le changement
     return valeurRecup
+print(decalageLigneADroite(Matrice(7,7,0),0,6))
 
 # decale la colonne numCol d'une case vers le haut en insérant la nouvelleValeur
 # dans la case ainsi libérée
@@ -79,21 +111,29 @@ def decalageColonneEnHaut(matrice, numCol, nouvelleValeur=0):
         nouvelleVal=(getVal(matrice,j+1,numCol))
         setVal(matrice,j,numCol,nouvelleVal)
     setVal(matrice,getNbLignes(matrice)-1,numCol,nouvelleValeur)
-    #print(matrice)
+    print(matrice)
     return valARecup
+print(decalageColonneEnHaut(Matrice(7,7,0),1,9))
 
 
 # decale la colonne numCol d'une case vers le haut en insérant la nouvelleValeur
 # dans la case ainsi libérée
 # la fonction retourne la valeur de la case "ejectée" par le décalage
 def decalageColonneEnBas(matrice, numCol, nouvelleValeur=0):
+    afficheMatrice(matrice)
     valeurRecup=getVal(matrice,getNbLignes(matrice)-1,numCol)
-    for j in range(1,getNbLignes(matrice)):
-        nouvelleVal=(getVal(matrice,j-1,numCol))
-        setVal(matrice,j,numCol,nouvelleVal)
-    setVal(matrice,getNbLignes(matrice)-1,numCol,nouvelleValeur)
-    #print(matrice)
+    print(valeurRecup)
+    
+    for j in range(getNbLignes(matrice)-1, 1, -1):
+        nouvelleVal= getVal(matrice,j,numCol)
+        setVal(matrice,j - 1,numCol,nouvelleVal)
+        
+        
+    setVal(matrice,0,numCol,nouvelleValeur)
+    afficheMatrice(matrice)
     return valeurRecup
+
+print(decalageColonneEnBas(Matrice(7,7,0),1,6))    
 
 
 #-----------------------------------------
@@ -146,43 +186,3 @@ def chargeMatrice(nomFic,typeVal='int'):
             j+=1
         i+=1
     return matrice
-
-# fonction utilitataire
-def afficheLigneSeparatrice(matrice,tailleCellule=4):
-    print()
-    for i in range(getNbColonnes(matrice)+1):
-        print('-'*tailleCellule+'+', end="")
-    print()
-
-# fonction d'affichage d'une matrice
-def afficheMatrice(matrice,tailleCellule=4):
-    nbColonnes=getNbColonnes(matrice)
-    nbLignes=getNbLignes(matrice)
-    print(' '*tailleCellule+'|',end='')
-    for i in range(nbColonnes):
-        print(str(i).center(tailleCellule)+'|',end='')
-    afficheLigneSeparatrice(matrice,tailleCellule)
-    for i in range(nbLignes):
-        print(str(i).rjust(tailleCellule)+'|',end='')
-        for j in range(nbColonnes):
-            print(str(getVal(matrice,i,j)).rjust(tailleCellule)+'|',end='')
-        afficheLigneSeparatrice(matrice,tailleCellule)
-    print()
-
-#m=Matrice(7,7,0)
-#print(setVal(m,2,1,-1))
-#afficheMatrice(m)
-
-matriceTemp = Matrice(7,7,0)
-setVal(matriceTemp,0,0,5)#juste pour tester
-print(decalageLigneAGauche(matriceTemp,0,1))
-afficheMatrice(matriceTemp)
-
-print(decalageLigneADroite(matriceTemp,0,6))
-afficheMatrice(matriceTemp)
-
-print(decalageColonneEnHaut(matriceTemp,1,9))
-afficheMatrice(matriceTemp)
-
-print(decalageColonneEnBas(matriceTemp,1,9))
-afficheMatrice(matriceTemp)
