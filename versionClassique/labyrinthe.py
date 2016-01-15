@@ -210,7 +210,10 @@ def accessible(labyrinthe,ligD,colD,ligA,colA):
 # indique si il y a un chemin entre la case ligD,colD et la case ligA,colA du labyrinthe
 # mais la valeur de retour est None s'il n'y a pas de chemin, sinon c'est un chemin possible entre ces deux cases
 def accessibleDist(labyrinthe,ligD,colD,ligA,colA):
-    pass
+    if not accessible(labyrinthe,ligD,colD,ligA,colA):
+    	return None
+    else:
+    	pass
 
 # exécute une action de jeu de la phase 1
 # si action vaut 'T' => faire tourner la carte à jouer
