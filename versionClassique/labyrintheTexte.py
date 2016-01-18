@@ -110,14 +110,28 @@ def animationChemin(lmt,chemin, joueur,pause=0.1):
 # dans le cas où x vaut une des quatre autres valeur, y doit valoir 1, 3 ou 5
 # c'est à dire le numéro de la ligne ou de la colonne où insérer la carte
 def saisirOrdre(lmt):
-    pass
+    ordre,x,y = None,None,None
+    while ordre not in ['T','N','E','S','O']:
+        ordre = input("Quel ordre ?")
+    if ordre == 'T':
+        x = 'T'
+    elif ordre in ['N','E','S','O']:
+        x = ordre
+        y = int(input("rangée ?"))
+    return (x,y)
  
 # permet de saisir les coordonées de la case de destination choisie par le joueur courant
 # on ne sort de la fonction qui ces coordonées sont valides et que le déplacement est possible
 # la fonction retourne le chemin entre la case où se trouve le joueur courant et la case de 
 # destination qu'il a choisi
 def saisirDeplacement(lmt):
-    pass
+    ligA,colA,possible = 8,8,None
+    print("Vous êtes en (",getLesJoueurs(getLabyrinthe(lmt))[getJoueurCourant(getLabyrinthe(lmt))]['position'][0],",",getLesJoueurs(getLabyrinthe(lmt))[getJoueurCourant(getLabyrinthe(lmt))]['position'][1],")")
+    while (possible == None) or (ligA > 7 or ligA < 0) or (colA > 7 or colA < 0):
+        ligA = int(input("coordonées x de la case de destination"))
+        colA = int(input("coordonées y de la case de destination"))
+        possible = accessibleDist(getLabyrinthe(lmt),getLesJoueurs(getLabyrinthe(lmt))[getJoueurCourant(getLabyrinthe(lmt))]['position'][0],getLesJoueurs(getLabyrinthe(lmt))[getJoueurCourant(getLabyrinthe(lmt))]['position'][1],ligA,colA)
+    return possible
         
 # demarre la partie en mode texte
 def demarrer(lmt):
@@ -175,6 +189,7 @@ except:
 #initialisation du labyrinthe
 l=Labyrinthe(int(nbJoueurs),nbTresorMax=nbTresorsInt)
 #initialisation de l'affichage
-g=LabyrintheTexte(l)
+g=LabyrintheTexte()
+setLabyrinthe(g,l)
 #démarrage de la partie
 demarrer(g)

@@ -15,7 +15,7 @@ def initTresor(joueurs, nbTresors, nbTresorMax):
 		n = nbTresorMax if nbTresorMax != 0 else (nbTresors // len(joueurs))
 		j = 0
 		while (j < n):
-			idTresorADistribuer = random.randint(0, nbTresors)
+			idTresorADistribuer = random.randint(0, nbTresors-1)
 			if (idTresorADistribuer not in listeTresorsDejaDistribues):
 					listeTresorsDejaDistribues.append(idTresorADistribuer)
 					joueurs[i]["trésors"].append(idTresorADistribuer)

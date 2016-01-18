@@ -3,7 +3,7 @@ import random
 '''
 structure carte
 dictionnaire
-	"direction" : list(bool)
+	"direction" : list(bool) True == Mur, False == Passage
 	"pion" : list de pion (int)
 	"tresor" : identifiant trésor (int)
 '''
@@ -62,6 +62,7 @@ def setPions(c,pions):
  
 # retourne la valeur du trésor qui se trouve sur la carte (0 si pas de trésor)
 def getTresor(c):
+    #print('carte',c)
     return c.get('tresor',0)
  
 # enlève le trésor qui se trouve sur la carte et retourne la valeur de ce trésor
@@ -109,7 +110,8 @@ def tourneAleatoire(c):
 # le code obtenu permet d'obtenir l'indice du caractère semi-graphique
 # correspondant à la carte dans la liste listeCartes au début de ce fichier
 def coderMurs(c):
-    return str(int(c['direction'][0]))+str(int(c['direction'][1]))+str(int(c['direction'][2]))+str(int(c['direction'][3]))
+    #print(int(c['direction'][3]),int(c['direction'][2]),int(c['direction'][1]),int(c['direction'][0]))
+    return int(str(int(c['direction'][3]))+str(int(c['direction'][2]))+str(int(c['direction'][1]))+str(int(c['direction'][0])),2)
  
 # positionne les mur d'une carte en fonction du code décrit précédemment
 def decoderMurs(c,code):
@@ -118,24 +120,25 @@ def decoderMurs(c,code):
        
 # fournit le caractère semi graphique correspondant à la carte (voir la variable listeCartes au début de ce script)
 def toChar(c):
-    return listeCartes[int(coderMurs(c),2)]
+    #print(int(coderMurs(c),2))
+    return listeCartes[coderMurs(c)]
  
 # suppose que la carte2 est placée au nord de la carte1 et indique
 # s'il y a un passage entre ces deux cartes en passant par le nord
 def passageNord(carte1,carte2):
-    return carte1['direction'][0] and carte2['direction'][2]
+    return not carte1['direction'][0] and not carte2['direction'][2]
  
 # suppose que la carte2 est placée au sud de la carte1 et indique
 # s'il y a un passage entre ces deux cartes en passant par le sud
 def passageSud(carte1,carte2):
-    return carte1['direction'][2] and carte2['direction'][0]
+    return not carte1['direction'][2] and not carte2['direction'][0]
  
 # suppose que la carte2 est placée à l'ouest de la carte1 et indique
 # s'il y a un passage entre ces deux cartes en passant par l'ouest
 def passageOuest(carte1,carte2):
-    return carte1['direction'][3] and carte2['direction'][1]
+    return not carte1['direction'][3] and not carte2['direction'][1]
  
 # suppose que la carte2 est placée à l'est de la carte1 et indique
 # s'il y a un passage entre ces deux cartes en passant par l'est
 def passageEst(carte1,carte2):
-    return carte1['direction'][1] and carte2['direction'][3]
+    return not carte1['direction'][1] and not carte2['direction'][3]
