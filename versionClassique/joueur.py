@@ -11,14 +11,14 @@ import random
 # attribue effectivement les trésors de manière aléatoire
 def initTresor(joueurs, nbTresors, nbTresorMax):
 	listeTresorsDejaDistribues = []
-	for i in range(len(joueurs)):
+	for i in range(1,len(joueurs)+1):
 		n = nbTresorMax if nbTresorMax != 0 else (nbTresors // len(joueurs))
 		j = 0
 		while (j < n):
 			idTresorADistribuer = random.randint(0, nbTresors-1)
 			if (idTresorADistribuer not in listeTresorsDejaDistribues):
 					listeTresorsDejaDistribues.append(idTresorADistribuer)
-					joueurs[i]["trésors"].append(idTresorADistribuer)
+					joueurs[i-1]["trésors"].append(idTresorADistribuer)
 					j += 1
 
 # permet de créer entre deux et quatre joueurs et leur distribue de manière équitable
@@ -31,7 +31,7 @@ def Joueurs(nbJoueurs=2, nbTresors=24, nbTresorMax=0):
 	assert(nbTresors > 0)
 	assert(nbTresorMax >= 0)
 	
-	for i in range(nbJoueurs):
+	for i in range(1,nbJoueurs+1):
 		listeJoueurs.append({
 			"idJoueur" : i,
 			"trésors" : [],
@@ -44,15 +44,15 @@ def Joueurs(nbJoueurs=2, nbTresors=24, nbTresorMax=0):
 # retourne le numéro du prochain trésor à trouver pour la joueur numJoueur
 # None s'il n'y a pas de prochain trésor
 def prochainTresor(joueurs,numJoueur):
-	if (len(joueurs[numJoueur]["trésors"]) <= 0):
+	if (len(joueurs[numJoueur-1]["trésors"]) <= 0):
 		prochain = None
 	else:
-		prochain = joueurs[numJoueur]["trésors"][0]
+		prochain = joueurs[numJoueur-1]["trésors"][0]
 	return prochain
 
 # retourne le nombre de trésors qu'il reste à trouver pour le joueur numJoueur
 def nbTresorsRestants(joueurs,numJoueur):
-	print(numJoueur)
+	#print(numJoueur)
 	for joueur in joueurs:
 		if joueur['idJoueur'] == numJoueur:
 			return len(joueur['trésors'])
@@ -60,10 +60,10 @@ def nbTresorsRestants(joueurs,numJoueur):
 # enlève le trésor courant du joueur numJoueur et retourne le nombre de trésor
 # qu'il reste à trouver pour ce joueur
 def tresorTrouve(joueurs,numJoueur):
-	if (len(joueurs[numJoueur]["trésors"]) <= 0):
+	if (len(joueurs[numJoueur-1]["trésors"]) <= 0):
 		nb = None
 	else:
-		del joueurs[numJoueur]["trésors"][0]
+		del joueurs[numJoueur-1]["trésors"][0]
 		nb = nbTresorsRestants(joueurs, numJoueur)
 		
 	return nb

@@ -67,6 +67,8 @@ class LabyrintheGraphique(object):
     def surfaceCarte(self,carte):
         t=getTresor(carte)
         p=getListePions(carte)
+        #print('liste pions',p)
+        #print('carte :', carte)
         img=self.imagesCartes[coderMurs(carte)]
         if img==None:
             return None
@@ -179,10 +181,12 @@ class LabyrintheGraphique(object):
         (xp,yp)=chemin.pop(0)
         for (x,y) in chemin:
             prendrePionL(self.labyrinthe,xp,yp,joueur)
+            print('je mets pion en (',x,',',y,')')
             mettrePionL(self.labyrinthe,x,y,joueur)
             self.afficheJeu()
             time.sleep(pause)
             xp,yp=x,y
+        getLesJoueurs(self.labyrinthe)[getJoueurCourant(self.labyrinthe)-1]['position'] = xp,yp
         return xp,yp
 
     def getCase(self,pos):
@@ -209,6 +213,7 @@ class LabyrintheGraphique(object):
         self.dessineGrille()
         self.afficheGrille()
         if not self.fini:
+            #print(getJoueurCourant(self.labyrinthe))
             self.afficheMessage(2,"C'est au joueur @img@ de jouer. Trésor à trouver @img@",[self.surfacePion(getJoueurCourant(self.labyrinthe)),self.surfaceTresor(getTresorCourant(self.labyrinthe))])
         self.afficheScore(3)
         self.afficheMessageInfo(4)
@@ -255,6 +260,7 @@ class LabyrintheGraphique(object):
                         self.messageInfo="Veuillez choisir une case du labyrinthe"
                         self.imgInfo=[]
                     else:
+                        #print(x,y)
                         chemin=accessibleDistJoueurCourant(self.labyrinthe,x,y)
                         jc=getJoueurCourant(self.labyrinthe)
                         if chemin==None:

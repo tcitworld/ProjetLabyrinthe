@@ -41,7 +41,7 @@ def afficheLabyrinthe(lmt,message="",sauts=0):
     print('Cartes restantes :',end='')
     labyrinthe=getLabyrinthe(lmt)
     for i in range(1,getNbJoueurs(labyrinthe)+1):
-        pcouleur('Joueur '+str(i)+' '+str(nbTresorsRestantsJoueur(labyrinthe,i))+' ',i)
+        pcouleur('\nJoueur '+str(i)+' '+str(nbTresorsRestantsJoueur(labyrinthe,i))+' ',i)
     print()
     print("C'est au tour du ",end='')
     pcouleur('Joueur '+str(getJoueurCourant(labyrinthe))+ " de jouer",getJoueurCourant(labyrinthe))
@@ -126,11 +126,11 @@ def saisirOrdre(lmt):
 # destination qu'il a choisi
 def saisirDeplacement(lmt):
     ligA,colA,possible = 8,8,None
-    print("Vous êtes en (",getLesJoueurs(getLabyrinthe(lmt))[getJoueurCourant(getLabyrinthe(lmt))]['position'][0],",",getLesJoueurs(getLabyrinthe(lmt))[getJoueurCourant(getLabyrinthe(lmt))]['position'][1],")")
+    print("Vous êtes en (",getLesJoueurs(getLabyrinthe(lmt))[getJoueurCourant(getLabyrinthe(lmt))-1]['position'][0],",",getLesJoueurs(getLabyrinthe(lmt))[getJoueurCourant(getLabyrinthe(lmt))-1]['position'][1],")")
     while (possible == None) or (ligA > 7 or ligA < 0) or (colA > 7 or colA < 0):
         ligA = int(input("coordonées x de la case de destination"))
         colA = int(input("coordonées y de la case de destination"))
-        possible = accessibleDist(getLabyrinthe(lmt),getLesJoueurs(getLabyrinthe(lmt))[getJoueurCourant(getLabyrinthe(lmt))]['position'][0],getLesJoueurs(getLabyrinthe(lmt))[getJoueurCourant(getLabyrinthe(lmt))]['position'][1],ligA,colA)
+        possible = accessibleDistJoueurCourant(getLabyrinthe(lmt),ligA,colA)
     return possible
         
 # demarre la partie en mode texte

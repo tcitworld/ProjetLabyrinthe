@@ -17,7 +17,7 @@ def ReconstruireChemin(chemin, depart, arrivee):
 		courant = chemin[courant]
 		chemin_.append(courant)
 
-	return chemin_
+	return list(reversed(chemin_))
 
 def AStar(plateau, depart, arrivee):
 	visites = set()

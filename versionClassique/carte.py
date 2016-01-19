@@ -17,7 +17,7 @@ listeCartes=['Ø','╦','╣','╗','╩','═','╝','Ø','╠','╔','║','Ø
 # les quatre premiers paramètres sont des booléens indiquant s'il y a un mur ou non dans chaque direction
 # tresor est le numéro du trésor qui se trouve sur la carte (0 s'il n'y a pas de trésor)
 # pions donne la liste des pions qui seront posés sur la carte (un pion est un entier entre 1 et 4)
-def Carte( nord, est, sud, ouest, tresor=0, pions=[]):
+def Carte( nord, est, sud, ouest, tresor, pions):
     return {'direction':[nord,est,sud,ouest],'tresor':tresor,'pions':pions}
  
 # retourne un booléen indiquant si la carte est valide ou non c'est à dire qu'elle a un ou deux murs
@@ -89,13 +89,14 @@ def poserPion(c, pion):
  
 # fait tourner la carte dans le sens horaire
 def tournerHoraire(c):
-    c['direction'].insert(-1,c['direction'][0])
-    c['direction'].pop(0)
+    print('tourne')
+    c['direction'].insert(0,c['direction'][3])
+    c['direction'].pop(-1)
    
 # fait tourner la carte dans le sens anti horaire
 def tournerAntiHoraire(c):
-    c['direction'].insert(0,c['direction'][-1])
-    c['direction'].pop(-1)
+    c['direction'].insert(3,c['direction'][0])
+    c['direction'].pop(0)
  
 # faire tourner la carte dans nombre de tour aléatoire
 def tourneAleatoire(c):
