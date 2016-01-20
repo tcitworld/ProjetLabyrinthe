@@ -99,12 +99,13 @@ def decalageLigneADroite(matrice, numLig, nouvelleValeur=0):
 # dans la case ainsi libérée
 # la fonction retourne la valeur de la case "ejectée" par le décalage
 def decalageColonneEnHaut(matrice, numCol, nouvelleValeur=0):
-    valARecup=getVal(matrice,0,numCol)
-    for j in range(getNbLignes(matrice)-1):
-        nouvelleVal=(getVal(matrice,j+1,numCol))
-        setVal(matrice,j,numCol,nouvelleVal)
-    setVal(matrice,getNbLignes(matrice)-1,numCol,nouvelleValeur)
-    #print(matrice)
+    valARecup = getVal(matrice, 0, numCol)
+    
+    for j in range(getNbLignes(matrice) - 1):
+        nouvelleVal = getVal(matrice, j + 1, numCol)
+        setVal(matrice, j, numCol, nouvelleVal)
+    
+    setVal(matrice, getNbLignes(matrice) - 1, numCol, nouvelleValeur)
     return valARecup
 
 
@@ -114,18 +115,20 @@ def decalageColonneEnHaut(matrice, numCol, nouvelleValeur=0):
 # la fonction retourne la valeur de la case "ejectée" par le décalage
 def decalageColonneEnBas(matrice, numCol, nouvelleValeur=0):
     #afficheMatrice(matrice)
-    valeurRecup=getVal(matrice,getNbLignes(matrice)-1,numCol)
+    valeurRecup=getVal(matrice, getNbLignes(matrice) - 1,numCol)
     
-    for j in range(0,getNbLignes(matrice)-1, 1):
-        nouvelleVal= getVal(matrice,j,numCol)
-        setVal(matrice,j-1,numCol,nouvelleVal)
+    for j in range(getNbLignes(matrice) - 1,0,-1):
+        nouvelleVal = getVal(matrice, j - 1, numCol)
+        setVal(matrice, j, numCol, nouvelleVal)
         
         
     setVal(matrice,0,numCol,nouvelleValeur)
     return valeurRecup
-
-'''matriceTemp = Matrice(7,7,0)
-setVal(matriceTemp,0,1,5)#juste pour tester
+'''
+matriceTemp = Matrice(7,7,0)
+setVal(matriceTemp,2,0,5) #juste pour tester
+setVal(matriceTemp,1,0,7)
+setVal(matriceTemp,3,0,4)
 afficheMatrice(matriceTemp)
 
 print("decalageLigneAGauche")
@@ -142,8 +145,8 @@ afficheMatrice(matriceTemp)
 
 print("decalageColonneEnBas")
 print(decalageColonneEnBas(matriceTemp,0,6))    
-afficheMatrice(matriceTemp)'''
-
+afficheMatrice(matriceTemp)
+'''
 #-----------------------------------------
 # entrées sorties
 #-----------------------------------------

@@ -113,11 +113,11 @@ def saisirOrdre(lmt):
     ordre,x,y = None,None,None
     while ordre not in ['T','N','E','S','O']:
         ordre = input("Quel ordre ?")
-    if ordre == 'T':
-        x = 'T'
-    elif ordre in ['N','E','S','O']:
-        x = ordre
-        y = int(input("rangée ?"))
+        if ordre == 'T':
+            x = 'T'
+        elif ordre in ['N','E','S','O']:
+            x = ordre
+            y = int(input("rangée ?"))
     return (x,y)
  
 # permet de saisir les coordonées de la case de destination choisie par le joueur courant
@@ -145,6 +145,17 @@ def demarrer(lmt):
             if res==0:
                 message="La carte a été tournée"
             elif res==1:
+                if (getCoordonneesJoueurCourant(labyrinthe) == None):
+                    prendrePion(labyrinthe["carteAmovible"], getJoueurCourant(labyrinthe))
+                            
+                    if (x == 'N'):
+                        mettrePionL(labyrinthe, 6, y, getJoueurCourant(labyrinthe))
+                    elif (x == 'S'):
+                        mettrePionL(labyrinthe, 0, y, getJoueurCourant(labyrinthe))
+                    elif (x == 'E'):
+                        mettrePionL(labyrinthe, y, 0, getJoueurCourant(labyrinthe))
+                    elif (x == 'O'):
+                        mettrePionL(labyrinthe, y, 6, getJoueurCourant(labyrinthe))
                 message="La carte a bien été insérée"
             elif res==2:
                 message="Ce coup est interdit car l'opposé du précédent"

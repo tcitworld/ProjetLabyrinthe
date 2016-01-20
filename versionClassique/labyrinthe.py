@@ -40,37 +40,29 @@ def Labyrinthe(nbJoueurs=2,nbTresors=24, nbTresorMax=0):
 
 	tresors = [i for i in range(nbTresors)]
 	tresorsPos = {}
-	cptTresorsAttr = 0
-	def initTresorsCarte(cptTresorsAttr,pos):
-		if random.randint(0,6) == 0 and cptTresorsAttr < len(tresors):
-			cptTresorsAttr+=1
-			tresorsPos[cptTresorsAttr-1] = pos
-			return tresors[cptTresorsAttr-1]
-		else:
-			return 0
 
 
 	# cartes fixes
 	pions = [x for x in range(len(joueurs))]
 	#ligne 1
 	setVal(plateau,0,0,Carte(True,False,False,True,0,[1]))
-	setVal(plateau,0,2,Carte(True,False,False,False,initTresorsCarte(cptTresorsAttr,(0,2)),[]))
-	setVal(plateau,0,4,Carte(True,False,False,False,initTresorsCarte(cptTresorsAttr,(0,4)),[]))
+	setVal(plateau,0,2,Carte(True,False,False,False,0,[]))
+	setVal(plateau,0,4,Carte(True,False,False,False,1,[]))
 	setVal(plateau,0,6,Carte(True,True,False,False,0,[2]))
 	#ligne 2
-	setVal(plateau,2,0,Carte(False,False,False,True,initTresorsCarte(cptTresorsAttr,(2,0)),[]))
-	setVal(plateau,2,2,Carte(False,False,False,True,initTresorsCarte(cptTresorsAttr,(2,2)),[]))
-	setVal(plateau,2,4,Carte(True,False,False,False,initTresorsCarte(cptTresorsAttr,(2,4)),[]))
-	setVal(plateau,2,6,Carte(False,True,False,False,initTresorsCarte(cptTresorsAttr,(2,6)),[]))
+	setVal(plateau,2,0,Carte(False,False,False,True,2,[]))
+	setVal(plateau,2,2,Carte(False,False,False,True,3,[]))
+	setVal(plateau,2,4,Carte(True,False,False,False,4,[]))
+	setVal(plateau,2,6,Carte(False,True,False,False,5,[]))
 	#ligne 3
-	setVal(plateau,4,0,Carte(False,False,False,True,initTresorsCarte(cptTresorsAttr,(4,0)),[]))
-	setVal(plateau,4,2,Carte(False,False,True,False,initTresorsCarte(cptTresorsAttr,(4,2)),[]))
-	setVal(plateau,4,4,Carte(False,True,False,False,initTresorsCarte(cptTresorsAttr,(4,4)),[]))
-	setVal(plateau,4,6,Carte(False,True,False,False,initTresorsCarte(cptTresorsAttr,(4,6)),[]))
+	setVal(plateau,4,0,Carte(False,False,False,True,6,[]))
+	setVal(plateau,4,2,Carte(False,False,True,False,7,[]))
+	setVal(plateau,4,4,Carte(False,True,False,False,8,[]))
+	setVal(plateau,4,6,Carte(False,True,False,False,9,[]))
 	# ligne 4
 	setVal(plateau,6,0,Carte(False,False,True,True,0,[3] if len(joueurs)>=3 else []))
-	setVal(plateau,6,2,Carte(False,True,False,False,initTresorsCarte(cptTresorsAttr,(6,2)),[]))
-	setVal(plateau,6,4,Carte(False,True,False,False,initTresorsCarte(cptTresorsAttr,(6,4)),[]))
+	setVal(plateau,6,2,Carte(False,True,False,False,10,[]))
+	setVal(plateau,6,4,Carte(False,True,False,False,11,[]))
 	setVal(plateau,6,6,Carte(False,True,True,False,0,[4] if len(joueurs)==4 else []))
 
 
@@ -78,15 +70,15 @@ def Labyrinthe(nbJoueurs=2,nbTresors=24, nbTresorMax=0):
 	# remplir plateau avec cartes
 	# construire toutes les cartes 
 	
-	listeCartesAmovibles,carteAmovible2 = creerCartesAmovibles(cptTresorsAttr,nbTresors)
+	listeCartesAmovibles,carteAmovible2 = creerCartesAmovibles(12,nbTresors)
 	k = 0
 	for i in range(7):
 		for j in range(7):
-			if i%2==1:
+			if i % 2 == 1:
 				setVal(plateau,i,j,listeCartesAmovibles[k])
 				tresorsPos[listeCartesAmovibles[k]['tresor']] = (i,j)
 				k+=1
-			elif i%2 == 0 and j%2==1:
+			elif i % 2 == 0 and j % 2 == 1:
 				setVal(plateau,i,j,listeCartesAmovibles[k])
 				tresorsPos[listeCartesAmovibles[k]['tresor']] = (i,j)
 				k+=1
@@ -97,13 +89,18 @@ def Labyrinthe(nbJoueurs=2,nbTresors=24, nbTresorMax=0):
 	joueurCourant = 1
 	phaseCourante = 1
 
-	dup = []
+	#d
+	'''dup = []
 	for carte in listeCartesAmovibles:
 		if carte['tresor'] in dup:
-			print(carte['tresor'])
+			print('duplicate id :', carte['tresor'])
 		else:
-			dup.append(carte['tresor'])
-		
+			dup.append(carte['tresor'])'''
+	#d
+	
+	print(tresors)
+	print(tresorsPos)
+	
 	return {"joueurs" : joueurs, "nbJoueurs" : len(joueurs), "plateau" : plateau, "trésors" : tresors, "nbTrésors" : len(tresors), "joueurCourant" : joueurCourant, "phaseCourante" : phaseCourante, "carteAmovible" : carteAmovible, "directionInterdite" : None, "rangéeInterdite": None, "tresorsPos" : tresorsPos}
 
 # retourne la matrice représentant le plateau de jeu
@@ -182,6 +179,9 @@ def creerCartesAmovibles(tresorDebut,nbTresors):
 	listeCartesAmovibles = []
 	carteAmovible = None
 	
+	print('creerCartesAmovibles() : tresorDebut =', tresorDebut)
+	print('creerCartesAmovibles() : nbTresors =', nbTresors)
+	
 	# les cartes amovibles aléatoires doivent respecter les règles suivantes
 	# pas de cartes à 4 murs
 	# pas de cartes à 0 murs
@@ -202,7 +202,7 @@ def creerCartesAmovibles(tresorDebut,nbTresors):
 			
 		murs_s = "{0:04b}".format(r)
 		murs = [int(x) for x in murs_s]
-		listeCartesAmovibles.append(Carte(bool(murs[0]), bool(murs[1]), bool(murs[2]), bool(murs[3]), (i + tresorDebut) if (i + tresorDebut) < nbTresors else 0,[]))
+		listeCartesAmovibles.append(Carte(bool(murs[0]), bool(murs[1]), bool(murs[2]), bool(murs[3]), (i + tresorDebut) if (i + tresorDebut) < nbTresors else 0, []))
 		
 	carteAmovible = [int(x) for x in "{0:04b}".format(random.randint(1, 3))]
 	
@@ -225,33 +225,34 @@ def coupInterdit(labyrinthe,direction,rangee):
 def jouerCarte(labyrinthe,direction,rangee):
 	if direction == 'N':
 		labyrinthe['carteAmovible'] = decalageColonneEnHaut(labyrinthe['plateau'],rangee,labyrinthe['carteAmovible'])
-		if getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position'][1] == rangee:
-			if getCoordonneesJoueurCourant(labyrinthe) != ('a','a'):
-				getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position'] = (getCoordonneesJoueurCourant(labyrinthe)[0]+GetDir(0)[0],getCoordonneesJoueurCourant(labyrinthe)[1]+GetDir(0)[1])
+		#if getCoordonneesJoueurCourant(labyrinthe)[1] == rangee:
+			#if getCoordonneesJoueurCourant(labyrinthe) != None:
+				#getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position'] = (getCoordonneesJoueurCourant(labyrinthe)[0]+GetDir(0)[0],getCoordonneesJoueurCourant(labyrinthe)[1]+GetDir(0)[1])
 		labyrinthe['directionInterdite'] = 'S'
 		labyrinthe['rangéeInterdite'] = rangee
 
 	elif direction == 'O':
 		labyrinthe['carteAmovible'] = decalageLigneAGauche(labyrinthe['plateau'],rangee,labyrinthe['carteAmovible'])
-		if getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position'][0] == rangee:
-			if getCoordonneesJoueurCourant(labyrinthe) != ('a','a'):
-				getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position']= (getCoordonneesJoueurCourant(labyrinthe)[0]+GetDir(3)[0],getCoordonneesJoueurCourant(labyrinthe)[1]+GetDir(3)[1])
+		#if getCoordonneesJoueurCourant(labyrinthe)[0] == rangee:
+			#if getCoordonneesJoueurCourant(labyrinthe) != None:
+				#getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position']= (getCoordonneesJoueurCourant(labyrinthe)[0]+GetDir(3)[0],getCoordonneesJoueurCourant(labyrinthe)[1]+GetDir(3)[1])
 		labyrinthe['directionInterdite'] = 'E'
 		labyrinthe['rangéeInterdite'] = rangee
 
 	elif direction == 'S':
+		print(direction, rangee)
 		labyrinthe['carteAmovible'] = decalageColonneEnBas(labyrinthe['plateau'],rangee,labyrinthe['carteAmovible'])
-		if getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position'][1] == rangee:
-			if getCoordonneesJoueurCourant(labyrinthe) != ('a','a'):
-				getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position'] = (getCoordonneesJoueurCourant(labyrinthe)[0]+GetDir(2)[0],getCoordonneesJoueurCourant(labyrinthe)[1]+GetDir(2)[1])
+		#if getCoordonneesJoueurCourant(labyrinthe)[1] == rangee:
+			#if getCoordonneesJoueurCourant(labyrinthe) != None:
+				#getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position'] = (getCoordonneesJoueurCourant(labyrinthe)[0]+GetDir(2)[0],getCoordonneesJoueurCourant(labyrinthe)[1]+GetDir(2)[1])
 		labyrinthe['directionInterdite'] = 'N'
 		labyrinthe['rangéeInterdite'] = rangee
 
 	elif direction == 'E':
 		labyrinthe['carteAmovible'] = decalageLigneADroite(labyrinthe['plateau'],rangee,labyrinthe['carteAmovible'])
-		if getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position'][0] == rangee:
-			if getCoordonneesJoueurCourant(labyrinthe) != ('a','a'):
-				getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position'] = (getCoordonneesJoueurCourant(labyrinthe)[0]+GetDir(1)[0],getCoordonneesJoueurCourant(labyrinthe)[1]+GetDir(1)[1])
+		#if getCoordonneesJoueurCourant(labyrinthe)[0] == rangee:
+			#if getCoordonneesJoueurCourant(labyrinthe) != None:
+				#getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position'] = (getCoordonneesJoueurCourant(labyrinthe)[0]+GetDir(1)[0],getCoordonneesJoueurCourant(labyrinthe)[1]+GetDir(1)[1])
 		labyrinthe['directionInterdite'] = 'O'
 		labyrinthe['rangéeInterdite'] = rangee
 
@@ -280,7 +281,7 @@ def getCoordonneesTresorCourant(labyrinthe):
 		for j in range(getNbColonnes(labyrinthe['plateau'])):
 			if getVal(labyrinthe['plateau'],i,j)['tresor'] == getTresorCourant(labyrinthe):
 				return i,j
-	return 'a','a'
+	return None
 
 # retourne sous la forme d'un couple (lin,col) la position dule joueur courant sur le plateau
 def getCoordonneesJoueurCourant(labyrinthe):
@@ -288,7 +289,7 @@ def getCoordonneesJoueurCourant(labyrinthe):
 		for j in range(getNbColonnes(labyrinthe['plateau'])):
 			if getJoueurCourant(labyrinthe) in getVal(labyrinthe['plateau'],i,j)['pions']:
 				return i,j
-	return 'a','a'
+	return None
 
 # prend le pion numJoueur sur sur la carte se trouvant en position lin,col du plateau
 def prendrePionL(labyrinthe,lin,col,numJoueur):
@@ -346,7 +347,10 @@ def executerActionPhase1(labyrinthe,action,rangee):
 # sinon ce n'est pas le cas, la fonction retourne None
 def accessibleDistJoueurCourant(labyrinthe, ligA,colA):
 	#print(getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1])
-	return accessibleDist(labyrinthe,getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position'][0],getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position'][1],ligA,colA)
+	if getCoordonneesJoueurCourant(labyrinthe) == None:
+		return None
+	x, y = getCoordonneesJoueurCourant(labyrinthe)
+	return accessibleDist(labyrinthe, x, y, ligA, colA)
 
 # vérifie si le le joueur courant vient de trouver un trésor (si oui fait le nécessaire)
 # vérifie si la partie est terminée, si ce n'est pas le cas passe au joueur suivant

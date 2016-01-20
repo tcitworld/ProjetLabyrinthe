@@ -95,7 +95,7 @@ def tournerHoraire(c):
    
 # fait tourner la carte dans le sens anti horaire
 def tournerAntiHoraire(c):
-    c['direction'].insert(3,c['direction'][0])
+    c['direction'].insert(4,c['direction'][0])
     c['direction'].pop(0)
  
 # faire tourner la carte dans nombre de tour aléatoire

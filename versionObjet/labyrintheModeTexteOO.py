@@ -9,6 +9,9 @@ class LabyrintheModeTexte(object):
         
     def setLabyrinthe(self,labyrinthe):
         self.labyrinthe=labyrinthe
+
+    def getLabyrinthe(self):
+        return self.labyrinthe
         
     def afficheCarte(self, carte,pion=1,tresor=-1):
             coulFond=NORMAL
@@ -32,7 +35,7 @@ class LabyrintheModeTexte(object):
         print(message)
         print('Cartes restantes :',end='')
         for i in range(1,self.labyrinthe.getNbJoueurs()+1):
-            pcouleur('Joueur '+str(i)+' '+str(self.labyrinthe.nbTresorsRestants(i))+' ',i)
+            pcouleur('Joueur '+str(i)+' '+str(self.labyrinthe.nbTresorsRestantsJoueur(i))+' ',i)
         print()
         print("C'est au tour du ",end='')
         pcouleur('Joueur '+str(self.labyrinthe.getJoueurCourant())+ " de jouer",self.labyrinthe.getJoueurCourant())
@@ -79,17 +82,34 @@ class LabyrintheModeTexte(object):
     def animationChemin(self,chemin, joueur,pause=0.1):
         (xp,yp)=chemin.pop(0)
         for (x,y) in chemin:
-            self.labyrinthe.prendrePion(xp,yp,joueur)
-            self.labyrinthe.mettrePion(x,y,joueur)
+            self.labyrinthe.prendrePionL(xp,yp,joueur)
+            self.labyrinthe.mettrePionL(x,y,joueur)
             self.afficheLabyrinthe(sauts=1)
             time.sleep(pause)
             xp,yp=x,y
         return xp,yp
 
     def saisirOrdre(self):
-        pass    
+        
+        ordre,x,y = None,None,None
+        while ordre not in ['T','N','E','S','O']:
+            ordre = input("Quel ordre ?")
+            if ordre == 'T':
+                x = 'T'
+            elif ordre in ['N','E','S','O']:
+                x = ordre
+                y = input("rangée ?")
+        return (x,y)
+
     def saisirDeplacement(self):
-        pass        
+        
+        ligA,colA,possible = 8,8,None
+        print("Vous êtes en (",self.getLabyrinthe().getCoordonneesJoueurCourant()[0],",",self.getLabyrinthe().getCoordonneesJoueurCourant()[1],")")
+        while (possible == None) or (ligA > 7 or ligA < 0) or (colA > 7 or colA < 0):
+            ligA = int(input("coordonées x de la case de destination"))
+            colA = int(input("coordonées y de la case de destination"))
+            possible = self.getLabyrinthe().accessibleDistJoueurCourant(ligA,colA)
+        return possible        
             
 
     def main(self):
@@ -119,7 +139,7 @@ class LabyrintheModeTexte(object):
                     finOrdre=True
             
             #xA,yA=self.saisirDeplacement()
-            chemin=self.saisirDeplacementAnime()
+            chemin=self.saisirDeplacement()
             jc=self.labyrinthe.getJoueurCourant()
             xA,yA=self.animationChemin(chemin,jc)
             c=self.labyrinthe.plateau.getVal(xA,yA)
@@ -127,8 +147,10 @@ class LabyrintheModeTexte(object):
             message=""
                 
             if c.getTresor()==t:
-                c.prendreTresor()
-                if self.labyrinthe.joueurCourantTrouveTresor()==0:
+                #c.prendreTresor()
+                self.labyrinthe.joueurCourantTrouveTresor()
+                #self.labyrinthe.getLesJoueurs()[self.labyrinthe.getJoueurCourant()]
+                if self.labyrinthe.nbTresorsRestantsJoueur(self.labyrinthe.getJoueurCourant())==0:
                     message="Le joueur "+str(jc)+" a gagné"
                     fini=True
                 else:
