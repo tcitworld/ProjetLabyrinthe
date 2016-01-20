@@ -133,7 +133,7 @@ class LabyrintheGraphique(object):
         texte="Nb trésors restants:"
         img=[]
         for i in range(self.labyrinthe.getNbJoueurs()):
-            texte+=" @img@ "+str(self.labyrinthe.nbTresorsRestants(i+1))
+            texte+=" @img@ "+str(self.labyrinthe.nbTresorsRestantsJoueur(i+1))
             img.append(self.surfacePion(i+1))
         self.afficheMessage(numLigne,texte,img)
     
@@ -144,7 +144,7 @@ class LabyrintheGraphique(object):
         self.imgInfo=None
         
     def afficheCarteAJouer(self):
-        self.surface.blit(self.surfaceCarte(self.labyrinthe.carte),(self.finl+self.deltal//2,self.finh//2))
+        self.surface.blit(self.surfaceCarte(self.labyrinthe.getCarteAJouer()),(self.finl+self.deltal//2,self.finh//2))
     
     def dessineGrille(self,couleur=(255,0,0)):
         self.surface.fill((0,0,0))
@@ -178,8 +178,8 @@ class LabyrintheGraphique(object):
     def animationChemin(self,chemin, joueur,pause=0.1):
         (xp,yp)=chemin.pop(0)
         for (x,y) in chemin:
-            self.labyrinthe.prendrePion(xp,yp,joueur)
-            self.labyrinthe.mettrePion(x,y,joueur)
+            self.labyrinthe.prendrePionL(xp,yp,joueur)
+            self.labyrinthe.mettrePionL(x,y,joueur)
             self.afficheJeu()
             time.sleep(pause)
             xp,yp=x,y
@@ -210,13 +210,13 @@ class LabyrintheGraphique(object):
         x=pos[1]//self.deltah
         y=pos[0]//self.deltal
         if x==0 and y in [2,4,6]:
-            return ('N',y-1)
-        if x==self.nbCol+1 and y in [2,4,6]:
             return ('S',y-1)
+        if x==self.nbCol+1 and y in [2,4,6]:
+            return ('N',y-1)
         if y==0 and x in [2,4,6]:
-            return ('O',x-1)
-        if y==self.nbLig+1 and x in [2,4,6]:
             return ('E',x-1)
+        if y==self.nbLig+1 and x in [2,4,6]:
+            return ('O',x-1)
         if x==0 or x==self.nbCol+1 or y==0 or y==self.nbLig+1:
             return (-1,-1)
         return (x-1,y-1)
@@ -248,27 +248,62 @@ class LabyrintheGraphique(object):
                 (x,y)=self.getCase(ev.pos)
                 if self.fini:
                     continue
-
+                (x,y)=self.getCase(ev.pos)
+                print('getCase() :', (x,y))
+                print('lt =', self.labyrinthe.getLesJoueurs()[self.labyrinthe.getJoueurCourant() - 1].getTresors())
                 if self.phase==1:
                     if x=='T':
                         self.labyrinthe.tournerCarte()
+                        self.messageInfo="La carte a été tournée"
+                        self.imgInfo=[]
                     elif x in ['N','S','O','E']:
                         if self.labyrinthe.coupInterdit(x,y):
                             self.messageInfo="Ce coup est interdit car l'opposé du précédent"
                             self.imgInfo=[]
                         else:
+                            print('avant joué',self.labyrinthe.getCoordonneesJoueurCourant())
                             self.labyrinthe.jouerCarte(x,y)
+                            print('après joué',self.labyrinthe.getCoordonneesJoueurCourant())
+                            if (self.labyrinthe.getCoordonneesJoueurCourant() == None):
+                                self.labyrinthe.carteAmovible.prendrePion(self.labyrinthe.getJoueurCourant())
+                            
+                                if (x == 'N'):
+                                    self.labyrinthe.mettrePionL(6, y, self.labyrinthe.getJoueurCourant())
+                                elif (x == 'S'):
+                                    self.labyrinthe.mettrePionL(0, y, self.labyrinthe.getJoueurCourant())
+                                elif (x == 'E'):
+                                    self.labyrinthe.mettrePionL(y, 0, self.labyrinthe.getJoueurCourant())
+                                elif (x == 'O'):
+                                    self.labyrinthe.mettrePionL(y, 6, self.labyrinthe.getJoueurCourant())
+
+                            self.messageInfo="La carte a bien été insérée"
+                            self.imgInfo=[]
                             self.phase=2
                     elif x!=-1:
                         self.messageInfo="Vous devez insérer la carte avant de vous déplacer"
                         self.imgInfo=[]
+                # 
+                # if self.phase==1:
+                # if x=='T':
+                #     self.labyrinthe.tournerCarte()
+                # elif x in ['N','S','O','E']:
+                #     if self.labyrinthe.coupInterdit(x,y):
+                #         self.messageInfo="Ce coup est interdit car l'opposé du précédent"
+                #         self.imgInfo=[]
+                #     else:
+                #         self.labyrinthe.jouerCarte(x,y)
+                #         self.phase=2
+                # elif x!=-1:
+                #     self.messageInfo="Vous devez insérer la carte avant de vous déplacer"
+                #     self.imgInfo=[]
+                #
                 else:
                     if x in ['T','N','S','O','E',-1]:
                         self.messageInfo="Veuillez choisir une case du labyrinthe"
                         self.imgInfo=[]
                     else:
                         jc=self.labyrinthe.getJoueurCourant()
-                        xD,yD=self.labyrinthe.coordonneesJoueurCourant()
+                        xD,yD=self.labyrinthe.getCoordonneesJoueurCourant()
                         chemin=self.labyrinthe.accessibleDist(xD,yD,x,y)
                         
                         if len(chemin)==0 :

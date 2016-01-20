@@ -136,7 +136,7 @@ class Labyrinthe():
 	# met à jour la structure qui gère les joueurs en enlevant le trésor qui le joueur
 	# courant vient de trouver
 	def joueurCourantTrouveTresor(self):
-		self.getLesJoueurs()[self.getJoueurCourant()].tresorTrouve()
+		self.getLesJoueurs()[self.getJoueurCourant()-1].tresorTrouve()
 		self.plateau.getVal(self.getCoordonneesJoueurCourant()[0], self.getCoordonneesJoueurCourant()[1]).prendreTresor()
 		self.decTresor()
 
