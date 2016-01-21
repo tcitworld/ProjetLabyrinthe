@@ -135,6 +135,19 @@ class LabyrintheModeTexte(object):
                     sys.exit()
                 else:
                     self.labyrinthe.jouerCarte(ordre[0].upper(),int(ordre[1]))
+                    print('coordav',self.labyrinthe.getCoordonneesJoueurCourant())
+                    if (self.labyrinthe.getCoordonneesJoueurCourant() == None): # Si le joueur courant arrive sur la carte amovible, le mettre à un endroit convenable.
+                        self.labyrinthe.carteAmovible.prendrePion(self.labyrinthe.getJoueurCourant())
+                    
+                        if (ordre[0] == 'N'):
+                            self.labyrinthe.mettrePionL(6, int(ordre[1]), self.labyrinthe.getJoueurCourant())
+                        elif (ordre[0] == 'S'):
+                            self.labyrinthe.mettrePionL(0, int(ordre[1]), self.labyrinthe.getJoueurCourant())
+                        elif (ordre[0] == 'E'):
+                            self.labyrinthe.mettrePionL(int(ordre[1]), 0, self.labyrinthe.getJoueurCourant())
+                        elif (ordre[0] == 'O'):
+                            self.labyrinthe.mettrePionL(int(ordre[1]), 6, self.labyrinthe.getJoueurCourant())
+
                     self.afficheLabyrinthe("La carte a été insérée en "+ordre[0].upper()+" "+ordre[1])                
                     finOrdre=True
             

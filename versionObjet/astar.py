@@ -30,6 +30,33 @@ class Noeud(object):
 	def __str__(self):
 		return "Noeud(" + str(self.x) + ", " + str(self.y) + ", " + str(self.poids) + ", " + str(self.heuristique) + ")"
 
+# classe Pile spécialisé pour AStar (seul l'insertion par heuristique et la recherche par position est disponible)
+# on pourrait facilement rendre cette classe générique
+class Pile(object):
+	def __init__(self):
+		self.pile = []
+	
+	def InsererNoeud(self, noeud):
+		i = 0
+		while i < len(self.pile) and noeud.getHeuristique() < self.pile[i].getHeuristique():
+			i += 1
+		
+		self.pile.insert(i, noeud)
+	
+	def RechercheNoeud(self, pos):
+		l = [x for x in self.pile if x.getPosition() == pos]
+		
+		if len(l) > 0:	
+			return l[0]
+		else:
+			return Noeud(None, None, 0, None)
+			
+	def Pop(self):
+		return self.pile.pop(0)
+	
+	def GetData(self):
+		return self.pile
+
 # fonction utilitaire
 def GetDir(i):
 	dirs = [(-1, 0), (0, 1), (1, 0), (0, -1)]
@@ -37,14 +64,6 @@ def GetDir(i):
 
 def Heuristique(n1, n2):
 	return abs(n1[0] - n2[0]) + abs(n1[1] - n2[1])
-
-def RechercheNoeudDansPile(pile, pos):
-	l = [x for x in pile if x.getPosition() == pos]
-	if len(l) > 0:	
-		return l[0]
-	else:
-		return Noeud(None, None, 0, None) # on retourne un noeud virtuel avec un poids 0
-		
 
 # classe AStar
 class AStar(object):
@@ -71,10 +90,12 @@ class AStar(object):
 	
 	def Calculer(self):
 		visites = set()
-		pile = [self.depart]
+		pile = Pile()
 		
-		while (len(pile)) > 0:
-			courant = pile.pop()
+		pile.InsererNoeud(self.depart)
+		
+		while (len(pile.GetData())) > 0:
+			courant = pile.Pop()
 			if courant.getPosition() == self.arrivee.getPosition():
 				self.cheminTrouve = True
 				return self.cheminTrouve
@@ -88,7 +109,7 @@ class AStar(object):
 				poids_v = courant.getPoids() + Heuristique(courant.getPosition(), pos_v)
 				
 				if pos_v[0] >= 0 and pos_v[0] < self.plateau.getNbLignes() and pos_v[1] >= 0 and pos_v[1] < self.plateau.getNbColonnes():
-					n = RechercheNoeudDansPile(pile, pos_v)
+					n = pile.RechercheNoeud(pos_v)
 					if pos_v in visites and poids_v >= n.getPoids():
 						continue
 					else:
@@ -112,18 +133,18 @@ class AStar(object):
 						
 						
 						if passage:
-							if poids_v < n.getPoids() or pos_v not in [k.getPosition() for k in pile]:
+							if poids_v < n.getPoids() or pos_v not in [k.getPosition() for k in pile.GetData()]:
 								self.traces[pos_v] = courant.getPosition()
 								n2 = Noeud(pos_v[0], pos_v[1], poids_v, poids_v + Heuristique(pos_v, self.arrivee.getPosition()))
-								pile.append(n2)
+								pile.InsererNoeud(n2)
 				else: # position en dehors du plateau
 					continue
-
+		return self.cheminTrouve
 
 #-------------------------------
 # TEST
 #-------------------------------
-'''
+
 import random
 
 # fonction d'affichage d'une matrice modifiée pour le test de l'algoritme a star
@@ -146,19 +167,26 @@ def drawMat(matrice,tailleCellule=4):
 		matrice.afficheLigneSeparatrice(tailleCellule)
 	print()
 
-plat = Matrice(7,7)
-for i in range(plat.getNbLignes()):
-	for j in range(plat.getNbColonnes()):
-		plat.setVal(i, j, Carte(bool(random.randint(0, 1)),bool(random.randint(0, 1)),bool(random.randint(0, 1)),bool(random.randint(0, 1)), 0, []))
+def genereRandomLab():
+	plat = Matrice(7,7)
 
-#plat.setVal(1, 0, Carte(bool(1), bool(1), bool(1), bool(0), 0, []))
-
-drawMat(plat)
-
+	for i in range(plat.getNbLignes()):
+		for j in range(plat.getNbColonnes()):
+			plat.setVal(i, j, Carte(bool(random.randint(0, 1)),bool(random.randint(0, 1)),bool(random.randint(0, 1)),bool(random.randint(0, 1)), 0, []))
+	return plat
+	
+'''	
 dep = (0, 0)
-arr = (1, 2)
-astar = AStar(plat, dep, arr)
-astar.Calculer()
-print('traces', astar.traces)
-print('chem', astar.ReconstruireChemin())
+arr = (6, 2)
+chem = None
+
+print('création d\'un labyrinthe valide pour le test en cours ...')
+while chem == None:
+	plat = genereRandomLab()
+	astar = AStar(plat, dep, arr)
+	print(astar.Calculer())
+	chem = astar.ReconstruireChemin()
+	
+drawMat(plat)
+print('chem', chem)
 '''

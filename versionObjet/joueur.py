@@ -5,20 +5,39 @@ class Joueur(object):
 	def __init__(self):
 		self.tresors = []
 		self.position = (None, None)
-	
+	#
+	# Retourne la liste des trésors pour un joueur.
+	# @return [int]
+	#
 	def getTresors(self):
 		return self.tresors
-	
+
+	#
+	# Retourne le tuple position pour un joueur.
+	# @return (int,int)
+	#
 	def getPosition(self):
 		return self.position
 	
+	#
+	# Ajoute un trésor à la liste des trésors d'un joueur.
+	# @param int tresor
+	#
 	def setTresor(self, tresor):
 		print('trésor : ',tresor)
 		self.tresors.append(tresor)
 	
+	#
+	# Change la position d'un joueur.
+	# @param (int,int) 
+	#
 	def setPosition(self, position):
 		self.position = position
 	
+	#
+	# Retourne le prochain trésor pour un joueur.
+	# @return int
+	#
 	def prochainTresor(self):
 		prochain = None
 		
@@ -27,9 +46,19 @@ class Joueur(object):
 		
 		return prochain
 	
+	#
+	# Retourne le nombre de trésors restants pour un joueur.
+	# @return int
+	#
+
 	def nbTresorsRestants(self):
 		return len(self.tresors)
-		
+	
+	#
+	# Supprime le trésor à trouver et renvoie le nombre de trésor restant
+	# @return None|int
+	#
+
 	def tresorTrouve(self):
 		nb = None
 		
@@ -56,7 +85,10 @@ class Joueurs(object):
 			self.listeJoueurs.append(Joueur())
 		
 		self.initTresor()
-		
+	
+	#
+	# Initie les trésors sur les joueurs
+	#
 	def initTresor(self):
 		listeTresorsDejaDistribues = set()
 		for i in range(self.nbJoueurs):

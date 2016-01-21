@@ -1,3 +1,8 @@
+#-------------------------------
+# Fichier : 	carte.py
+# Fonction : 	implémente la structure des cartes dans le jeu du labyrinthe ainsi que leur gestion
+#-------------------------------
+
 import random
 
 '''

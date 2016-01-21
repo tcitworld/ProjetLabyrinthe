@@ -94,7 +94,7 @@ class Carte:
      
     # fait tourner la carte dans le sens horaire
     def tournerHoraire(self):
-        directions = [self.nord,self.est,self.sud,self.ouest]
+        directions = [self.nord,self.est,self.sud,self.ouest] # On met les directions dans une liste pour pouvoir faire une permutation circulaire facilement
         directions.insert(0,directions[3])
         directions.pop(-1)
         [self.nord,self.est,self.sud,self.ouest] = directions

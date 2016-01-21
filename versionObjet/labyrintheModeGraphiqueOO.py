@@ -261,10 +261,8 @@ class LabyrintheGraphique(object):
                             self.messageInfo="Ce coup est interdit car l'opposé du précédent"
                             self.imgInfo=[]
                         else:
-                            print('avant joué',self.labyrinthe.getCoordonneesJoueurCourant())
                             self.labyrinthe.jouerCarte(x,y)
-                            print('après joué',self.labyrinthe.getCoordonneesJoueurCourant())
-                            if (self.labyrinthe.getCoordonneesJoueurCourant() == None):
+                            if (self.labyrinthe.getCoordonneesJoueurCourant() == None): # Si le joueur courant arrive sur la carte amovible, le mettre à un endroit convenable.
                                 self.labyrinthe.carteAmovible.prendrePion(self.labyrinthe.getJoueurCourant())
                             
                                 if (x == 'N'):
@@ -282,21 +280,6 @@ class LabyrintheGraphique(object):
                     elif x!=-1:
                         self.messageInfo="Vous devez insérer la carte avant de vous déplacer"
                         self.imgInfo=[]
-                # 
-                # if self.phase==1:
-                # if x=='T':
-                #     self.labyrinthe.tournerCarte()
-                # elif x in ['N','S','O','E']:
-                #     if self.labyrinthe.coupInterdit(x,y):
-                #         self.messageInfo="Ce coup est interdit car l'opposé du précédent"
-                #         self.imgInfo=[]
-                #     else:
-                #         self.labyrinthe.jouerCarte(x,y)
-                #         self.phase=2
-                # elif x!=-1:
-                #     self.messageInfo="Vous devez insérer la carte avant de vous déplacer"
-                #     self.imgInfo=[]
-                #
                 else:
                     if x in ['T','N','S','O','E',-1]:
                         self.messageInfo="Veuillez choisir une case du labyrinthe"
@@ -306,7 +289,7 @@ class LabyrintheGraphique(object):
                         xD,yD=self.labyrinthe.getCoordonneesJoueurCourant()
                         chemin=self.labyrinthe.accessibleDist(xD,yD,x,y)
                         
-                        if len(chemin)==0 :
+                        if chemin==None :
                             self.messageInfo="Cette case n'est pas accessible au joueur @img@"
                             self.imgInfo=[self.surfacePion(jc)]
                         else:

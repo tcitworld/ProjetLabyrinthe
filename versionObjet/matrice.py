@@ -98,16 +98,12 @@ mat.afficheMatrice()
 print(mat.getVal(2, 0))
 print(mat.getVal(1, 0))
 print(mat.getVal(3, 0))
-
 print("mat.decalageLigneAGauche(0, 3)", mat.decalageLigneAGauche(0, 3))
 mat.afficheMatrice()
-
 print("mat.decalageLigneADroite(0, 6)", mat.decalageLigneADroite(0, 6))
 mat.afficheMatrice()
-
 print("mat.decalageColonneEnHaut(0, 9)", mat.decalageColonneEnHaut(0, 9))
 mat.afficheMatrice()
-
 print("mat.decalageColonneEnBas(0, 12)",mat.decalageColonneEnBas(0, 12))
 mat.afficheMatrice()
 '''

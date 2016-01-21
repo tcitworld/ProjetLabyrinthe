@@ -1,3 +1,8 @@
+#-------------------------------
+# Fichier : 	matrice.py
+# Fonction : 	implementation la structure interne des matrices dans le jeu ainsi que la gestion des matrices
+#-------------------------------
+
 import random
 
 #-----------------------------------------
@@ -13,7 +18,6 @@ def Matrice(nbLignes,nbColonnes,valeurParDefaut=0):
         liste.append(valeurParDefaut)
         matrice={'Lignes':nbLignes,'Colonnes':nbColonnes,'valeurs': liste}
     return matrice
-#print(Matrice(7,7,0))
     
 
 # retourne le nombre de ligne de la matrice
@@ -21,26 +25,19 @@ def getNbLignes(matrice):
     NbLignes=matrice['Lignes']
     return NbLignes
 
-#print(getNbLignes(Matrice(7,7,0)))
-    
-    
-
 #retourne le nombre de colonnes de la matrice
 def getNbColonnes(matrice):
     NbColonnes=matrice['Colonnes']
     return NbColonnes
-#print(getNbColonnes(Matrice(7,7,0)))
 
 # retourne la valeur qui se trouve à la ligne et la colonne passées en paramètres
 def getVal(matrice,ligne,colonne):
     valeur=matrice['valeurs'][(getNbColonnes(matrice)*ligne)+colonne]
     return valeur
-#print(getVal(Matrice(7,7,0),2,1))
 
 # place la valeur à l'emplacement ligne colonne de la matrice
 def setVal(matrice,ligne,colonne,valeur):
     matrice['valeurs'][(getNbColonnes(matrice)*ligne)+colonne]=valeur
-#print(setVal(Matrice(7,7,0),2,1,-1))
 
 
 
@@ -81,7 +78,6 @@ def decalageLigneAGauche(matrice, numLig, nouvelleValeur=0):
         setVal(matrice,numLig,i,nouvelleV)
     setVal(matrice,numLig,getNbColonnes(matrice) - 1,nouvelleValeur)
     return valeurRecuperee
-        
 
 # dans la case ainsi libérée
 # la fonction retourne la valeur de la case "ejectée" par le décalage
@@ -93,7 +89,6 @@ def decalageLigneADroite(matrice, numLig, nouvelleValeur=0):
     setVal(matrice,numLig,0,nouvelleValeur)
     #print(matrice)#pour voir ma matrice apres le changement
     return valeurRecup
-
 
 # decale la colonne numCol d'une case vers le haut en insérant la nouvelleValeur
 # dans la case ainsi libérée
@@ -107,9 +102,7 @@ def decalageColonneEnHaut(matrice, numCol, nouvelleValeur=0):
     
     setVal(matrice, getNbLignes(matrice) - 1, numCol, nouvelleValeur)
     return valARecup
-
-
-
+	
 # decale la colonne numCol d'une case vers le haut en insérant la nouvelleValeur
 # dans la case ainsi libérée
 # la fonction retourne la valeur de la case "ejectée" par le décalage
@@ -124,29 +117,27 @@ def decalageColonneEnBas(matrice, numCol, nouvelleValeur=0):
         
     setVal(matrice,0,numCol,nouvelleValeur)
     return valeurRecup
+
 '''
 matriceTemp = Matrice(7,7,0)
 setVal(matriceTemp,2,0,5) #juste pour tester
 setVal(matriceTemp,1,0,7)
 setVal(matriceTemp,3,0,4)
 afficheMatrice(matriceTemp)
-
 print("decalageLigneAGauche")
 print(decalageLigneAGauche(matriceTemp,0,3))
 afficheMatrice(matriceTemp)
-
 print("decalageLigneADroite")
 print(decalageLigneADroite(matriceTemp,0,6))
 afficheMatrice(matriceTemp)
-
 print("decalageColonneEnHaut")
 print(decalageColonneEnHaut(matriceTemp,0,9))
 afficheMatrice(matriceTemp)
-
 print("decalageColonneEnBas")
 print(decalageColonneEnBas(matriceTemp,0,6))    
 afficheMatrice(matriceTemp)
 '''
+
 #-----------------------------------------
 # entrées sorties
 #-----------------------------------------
