@@ -126,7 +126,7 @@ def saisirOrdre(lmt):
 # destination qu'il a choisi
 def saisirDeplacement(lmt):
     ligA,colA,possible = 8,8,None
-    print("Vous êtes en (",getLesJoueurs(getLabyrinthe(lmt))[getJoueurCourant(getLabyrinthe(lmt))-1]['position'][0],",",getLesJoueurs(getLabyrinthe(lmt))[getJoueurCourant(getLabyrinthe(lmt))-1]['position'][1],")")
+    print("Vous êtes en", getCoordonneesJoueurCourant(labyrinthe))
     while (possible == None) or (ligA > 7 or ligA < 0) or (colA > 7 or colA < 0):
         ligA = int(input("coordonées x de la case de destination"))
         colA = int(input("coordonées y de la case de destination"))

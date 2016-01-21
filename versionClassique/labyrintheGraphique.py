@@ -67,8 +67,6 @@ class LabyrintheGraphique(object):
     def surfaceCarte(self,carte):
         t=getTresor(carte)
         p=getListePions(carte)
-        #print('liste pions',p)
-        #print('carte :', carte)
         img=self.imagesCartes[coderMurs(carte)]
         if img==None:
             return None

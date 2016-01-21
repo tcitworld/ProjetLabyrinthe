@@ -49,12 +49,16 @@ def ReconstruireChemin(traces, depart, arrivee):
 def RechercheNoeudDansPile(pile, pos):
 	l = [x for x in pile if (x["x"], x["y"]) == pos]
 	
+	noeud = None
+	
 	# si on obtient un élément dans la liste on le retourne
 	if len(l) > 0:
-		return l[0]
+		noeud = l[0]
 	else: # sinon on retourne un noeud virtuel avec un poids de 0 pour nos calculs d'heuristique
-		return Noeud(None, None, 0, None)
-
+		noeud = Noeud(None, None, 0, None)
+	
+	return noeud
+	
 def InsererNoeudDansPile(pile, noeud):
 	i = 0
 	while i < len(pile) and noeud["heuristique"] < pile[i]["heuristique"]:
@@ -69,12 +73,14 @@ def AStar(plateau, depart, arrivee):
 	# trace des passages visités avec leurs connections
 	traces = {}
 	
+	cheminTrouve = False
+	
 	# on créer le noeud initial avec la position de départ et on le place sur la pile
 	ndep = Noeud(depart[0], depart[1], Heuristique(depart, arrivee), 0)
 	pile = [ndep]
 	
 	# tant que la pile n'est pas vide (un pile vide correspond à tout les points accessibles traités et aucun chemin vers la destination)
-	while len(pile) > 0:
+	while len(pile) > 0 and not cheminTrouve:
 	
 		# on récupère et consume le noeud au sommet de notre pile pour le traiter
 		courant = pile.pop(0)
@@ -84,7 +90,8 @@ def AStar(plateau, depart, arrivee):
 		
 		# si la position du noeud à traiter correspond à l'objectif on sort car on est assuré d'un chemin (pas forcément le plus court)
 		if pos_courante == arrivee:
-			return ReconstruireChemin(traces, depart, arrivee)
+			cheminTrouve = True
+			continue
 		
 		# on ajoute la position référencée par le noeud en cours de traitement à l'ensemble des noeuds visités
 		visites.add(pos_courante)
@@ -142,8 +149,11 @@ def AStar(plateau, depart, arrivee):
 			else: # position en dehors du plateau
 				continue
 	
-	# aucun chemin possible pour atteindre la destination
-	return None
+	# on renvoie le chemin si il existe
+	chemin = None
+	if cheminTrouve:
+		chemin = ReconstruireChemin(traces, depart, arrivee)
+	return chemin
 #-------------------------------
 # TEST
 #-------------------------------
