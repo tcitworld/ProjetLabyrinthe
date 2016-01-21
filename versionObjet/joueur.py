@@ -24,7 +24,6 @@ class Joueur(object):
 	# @param int tresor
 	#
 	def setTresor(self, tresor):
-		print('trésor : ',tresor)
 		self.tresors.append(tresor)
 	
 	#

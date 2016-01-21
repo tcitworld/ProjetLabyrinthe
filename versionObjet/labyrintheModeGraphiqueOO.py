@@ -249,8 +249,6 @@ class LabyrintheGraphique(object):
                 if self.fini:
                     continue
                 (x,y)=self.getCase(ev.pos)
-                print('getCase() :', (x,y))
-                print('lt =', self.labyrinthe.getLesJoueurs()[self.labyrinthe.getJoueurCourant() - 1].getTresors())
                 if self.phase==1:
                     if x=='T':
                         self.labyrinthe.tournerCarte()

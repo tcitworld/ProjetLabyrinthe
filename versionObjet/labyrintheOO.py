@@ -28,13 +28,13 @@ dictionnaire
 # un joueur courant est choisi et la phase est initialisée$
 class Labyrinthe():
 	def __init__(self,nbJoueurs,nbTresors=24, nbTresorMax=0):
-		# print(nbJoueurs)
 		self.nbTresors = 24
 		self.nbTresorMax = 0
 		self.joueurs = Joueurs(nbJoueurs, self.nbTresors, self.nbTresorMax)
 		self.nbJoueurs = nbJoueurs
 		self.plateau = Matrice(7, 7)
 		
+		# Initialisation des joueurs aux 4 coins du jeu
 		if 1 < self.getNbJoueurs() < 5:
 			self.joueurs.listeJoueurs[0].setPosition((0,0))
 			self.joueurs.listeJoueurs[1].setPosition((0,6))
@@ -47,7 +47,7 @@ class Labyrinthe():
 		self.tresorsPos = {}
 
 
-		# cartes fixes
+		# initialisation des cartes fixes
 		self.pions = [x for x in range(self.getNbJoueurs())]
 		#ligne 1
 		self.plateau.setVal(0,0,Carte(True,False,False,True,0,[1]))
@@ -75,6 +75,8 @@ class Labyrinthe():
 		# remplir plateau avec cartes
 		# construire toutes les cartes 
 		
+		# Création des cartes amovibles
+
 		listeCartesAmovibles,carteAmovible2 = self.creerCartesAmovibles(12)
 		k = 0
 		for i in range(7):
@@ -89,13 +91,11 @@ class Labyrinthe():
 					k+=1
 		self.carteAmovible = Carte(bool(carteAmovible2[0]),bool(carteAmovible2[1]),bool(carteAmovible2[2]),bool(carteAmovible2[3]),0,[])
 
+		# Paramètres
 		self.joueurCourant = 1
 		self.phaseCourante = 1
 		self.directionInterdite = None
 		self.rangéeInterdite = None
-		
-		for joueur in self.joueurs.listeJoueurs:
-			print(joueur.getTresors())
 		
 	# retourne la matrice représentant le plateau de jeu
 	def getPlateau(self):
@@ -147,7 +147,6 @@ class Labyrinthe():
 	# enlève le trésor numTresor sur la carte qui se trouve sur la case lin,col du plateau
 	# si le trésor ne s'y trouve pas la fonction ne fait rien
 	def prendreTresorL(self,lin,col,numTresor):
-		#print('coucou',getVal(labyrinthe['plateau'], lin, col))
 		if self.plateau.getVal(lin, col).getTresor() == numTresor:
 			self.plateau.getVal(lin, col).prendreTresor()
 
@@ -172,10 +171,7 @@ class Labyrinthe():
 		nbCartes = 34
 		listeCartesAmovibles = []
 		carteAmovible = None
-		
-		# print('creerCartesAmovibles() : tresorDebut =', tresorDebut)
-		# print('creerCartesAmovibles() : nbTresors =', self.nbTresors)
-		
+				
 		# les cartes amovibles aléatoires doivent respecter les règles suivantes
 		# pas de cartes à 4 murs
 		# pas de cartes à 0 murs
@@ -208,7 +204,6 @@ class Labyrinthe():
 	# fonction qui retourne True si le coup proposé correspond au coup interdit
 	# elle retourne False sinon
 	def coupInterdit(self,direction,rangee):
-		#return True if rangee % 2 == 0 else False
 		return True if ((rangee % 2 == 0) or (self.directionInterdite == direction and self.rangéeInterdite == rangee)) else False
 		
 	# fonction qui joue la carte amovible dans la direction et sur la rangée passées 
@@ -219,33 +214,21 @@ class Labyrinthe():
 	def jouerCarte(self,direction,rangee):
 		if direction == 'N':
 			self.carteAmovible = self.plateau.decalageColonneEnHaut(rangee,self.carteAmovible)
-			#if getCoordonneesJoueurCourant(labyrinthe)[1] == rangee:
-				#if getCoordonneesJoueurCourant(labyrinthe) != None:
-					#getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position'] = (getCoordonneesJoueurCourant(labyrinthe)[0]+GetDir(0)[0],getCoordonneesJoueurCourant(labyrinthe)[1]+GetDir(0)[1])
 			self.directionInterdite = 'S'
 			self.rangéeInterdite = rangee
 
 		elif direction == 'O':
 			self.carteAmovible = self.plateau.decalageLigneAGauche(rangee,self.carteAmovible)
-			#if getCoordonneesJoueurCourant(labyrinthe)[0] == rangee:
-				#if getCoordonneesJoueurCourant(labyrinthe) != None:
-					#getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position']= (getCoordonneesJoueurCourant(labyrinthe)[0]+GetDir(3)[0],getCoordonneesJoueurCourant(labyrinthe)[1]+GetDir(3)[1])
 			self.directionInterdite = 'E'
 			self.rangéeInterdite = rangee
 
 		elif direction == 'S':
 			self.carteAmovible = self.plateau.decalageColonneEnBas(rangee,self.carteAmovible)
-			#if getCoordonneesJoueurCourant(labyrinthe)[1] == rangee:
-				#if getCoordonneesJoueurCourant(labyrinthe) != None:
-					#getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position'] = (getCoordonneesJoueurCourant(labyrinthe)[0]+GetDir(2)[0],getCoordonneesJoueurCourant(labyrinthe)[1]+GetDir(2)[1])
 			self.directionInterdite = 'N'
 			self.rangéeInterdite = rangee
 
 		elif direction == 'E':
 			self.carteAmovible = self.plateau.decalageLigneADroite(rangee,self.carteAmovible)
-			#if getCoordonneesJoueurCourant(labyrinthe)[0] == rangee:
-				#if getCoordonneesJoueurCourant(labyrinthe) != None:
-					#getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1]['position'] = (getCoordonneesJoueurCourant(labyrinthe)[0]+GetDir(1)[0],getCoordonneesJoueurCourant(labyrinthe)[1]+GetDir(1)[1])
 			self.directionInterdite = 'O'
 			self.rangéeInterdite = rangee
 
@@ -264,26 +247,26 @@ class Labyrinthe():
 
 	# retourne le numéro du trésor à trouver pour le joueur courant
 	def getTresorCourant(self):
-		#print(self.joueurs.listeJoueurs[self.joueurCourant])
 		return self.getLesJoueurs()[self.getJoueurCourant()-1].prochainTresor()
 
 	# retourne sous la forme d'un couple (lin,col) la position du trésor à trouver 
 	# pour le joueur courant sur le plateau
 	def getCoordonneesTresorCourant(self):
-		#print(labyrinthe["tresorsPos"])
+		coord = None
 		for i in range(self.plateau.getNbLignes()):
 			for j in range(self.plateau.getNbColonnes()):
 				if self.plateau.getVal(i,j).getTresor() == self.getTresorCourant():
-					return i,j
-		return None
+					coord = i,j
+		return coord
 
 	# retourne sous la forme d'un couple (lin,col) la position dule joueur courant sur le plateau
 	def getCoordonneesJoueurCourant(self):
+		coord = None
 		for i in range(self.plateau.getNbLignes()):
 			for j in range(self.plateau.getNbColonnes()):
 				if self.getJoueurCourant() in self.plateau.getVal(i,j).getListePions():
-					return i,j
-		return None
+					coord = i,j
+		return coord
 
 	# prend le pion numJoueur sur sur la carte se trouvant en position lin,col du plateau
 	def prendrePionL(self,lin,col,numJoueur):
@@ -300,7 +283,6 @@ class Labyrinthe():
 	def accessibleDist(self,linD,colD,linA,colA):
 		depart = (linD,colD)
 		arrivee = (linA,colA)
-		print('depart:',depart,'arrivee',arrivee)
 		chemin = AStar(self.plateau,depart,arrivee)
 		chemin.Calculer()
 		return chemin.ReconstruireChemin()
@@ -318,32 +300,30 @@ class Labyrinthe():
 	# 2 si action et rangee sont des entiers positifs
 	# 3 dans tous les autres cas
 	def executerActionPhase1(self,action,rangee):
+		coderetour = 2
 		if not (action == self.directionInterdite and rangee == self.rangéeInterdite):
-			if type(action) == 'int' and type(rangee) == 'int':
-				return 2
-			else:
+			if not type(action) == 'int' and not type(rangee) == 'int':
 			    if action == 'T':
 			    	self.tournerCarte()
-			    	return 0
+			    	coderetour = 0
 			    elif action in ['N','E','S','O'] and rangee in [1,3,5] :
-			    		self.jouerCarte(action,rangee)
-			    		self.changerPhase()
-			    		return 1
+		    		self.jouerCarte(action,rangee)
+		    		self.changerPhase()
+		    		coderetour = 1
 			    else:
-			    	assert('action inconnue')
-			    	return 3
-		else:
-			return 2
+			    	coderetour = 3
+		return coderetour
 
 	# verifie si le joueur courant peut accéder la case ligA,colA
 	# si c'est le cas la fonction retourne une liste représentant un chemin possible
 	# sinon ce n'est pas le cas, la fonction retourne None
 	def accessibleDistJoueurCourant(self, ligA,colA):
-		#print(getLesJoueurs(labyrinthe)[getJoueurCourant(labyrinthe)-1])
 		if self.getCoordonneesJoueurCourant() == None:
-			return None
-		x, y = self.getCoordonneesJoueurCourant()
-		return self.accessibleDist(x, y, ligA, colA)
+			chemin = None
+		else:
+			x, y = self.getCoordonneesJoueurCourant()
+			chemin = self.accessibleDist(x, y, ligA, colA)
+		return chemin
 
 	# vérifie si le le joueur courant vient de trouver un trésor (si oui fait le nécessaire)
 	# vérifie si la partie est terminée, si ce n'est pas le cas passe au joueur suivant
@@ -352,20 +332,19 @@ class Labyrinthe():
 	# 1 si le joueur courant a trouvé un trésor mais la partie n'est pas terminée
 	# 2 si le joueur courant a trouvé son dernier trésor (la partie est donc terminée)
 	def finirTour(self):
-		# print('coord trésor',self.getCoordonneesTresorCourant())
-		# print('coord joueur',self.getCoordonneesJoueurCourant())
-
+		coderetour = 0
 		if self.getCoordonneesJoueurCourant() == self.getCoordonneesTresorCourant():
 			self.joueurCourantTrouveTresor()
 			if self.joueurs[self.joueurCourant].prochainTresor() == None:
-				return 2
+				coderetour = 2
 			self.changerJoueurCourant()
 			self.changerPhase()
-			return 1
+			coderetour = 1
 		else:
 			self.changerPhase()
 			self.changerJoueurCourant()
-			return 0
+			coderetour = 0
+		return coderetour
 
 
 	#-----------------------------------------

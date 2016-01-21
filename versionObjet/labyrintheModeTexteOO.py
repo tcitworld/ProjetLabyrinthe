@@ -135,7 +135,6 @@ class LabyrintheModeTexte(object):
                     sys.exit()
                 else:
                     self.labyrinthe.jouerCarte(ordre[0].upper(),int(ordre[1]))
-                    print('coordav',self.labyrinthe.getCoordonneesJoueurCourant())
                     if (self.labyrinthe.getCoordonneesJoueurCourant() == None): # Si le joueur courant arrive sur la carte amovible, le mettre à un endroit convenable.
                         self.labyrinthe.carteAmovible.prendrePion(self.labyrinthe.getJoueurCourant())
                     
