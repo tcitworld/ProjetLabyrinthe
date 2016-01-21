@@ -27,9 +27,9 @@ dictionnaire
 # à chaque joueur en restant équitable
 # un joueur courant est choisi et la phase est initialisée$
 class Labyrinthe():
-	def __init__(self,nbJoueurs,nbTresors=24, nbTresorMax=0):
-		self.nbTresors = 24
-		self.nbTresorMax = 0
+	def __init__(self,nbJoueurs,nbTresors=24, nbTresorMax=1):
+		self.nbTresors = nbTresors
+		self.nbTresorMax = nbTresorMax
 		self.joueurs = Joueurs(nbJoueurs, self.nbTresors, self.nbTresorMax)
 		self.nbJoueurs = nbJoueurs
 		self.plateau = Matrice(7, 7)
@@ -51,23 +51,23 @@ class Labyrinthe():
 		self.pions = [x for x in range(self.getNbJoueurs())]
 		#ligne 1
 		self.plateau.setVal(0,0,Carte(True,False,False,True,0,[1]))
-		self.plateau.setVal(0,2,Carte(True,False,False,False,0,[]))
-		self.plateau.setVal(0,4,Carte(True,False,False,False,1,[]))
+		self.plateau.setVal(0,2,Carte(True,False,False,False,1,[]))
+		self.plateau.setVal(0,4,Carte(True,False,False,False,2,[]))
 		self.plateau.setVal(0,6,Carte(True,True,False,False,0,[2]))
 		#ligne 2
-		self.plateau.setVal(2,0,Carte(False,False,False,True,2,[]))
-		self.plateau.setVal(2,2,Carte(False,False,False,True,3,[]))
-		self.plateau.setVal(2,4,Carte(True,False,False,False,4,[]))
-		self.plateau.setVal(2,6,Carte(False,True,False,False,5,[]))
+		self.plateau.setVal(2,0,Carte(False,False,False,True,3,[]))
+		self.plateau.setVal(2,2,Carte(False,False,False,True,4,[]))
+		self.plateau.setVal(2,4,Carte(True,False,False,False,5,[]))
+		self.plateau.setVal(2,6,Carte(False,True,False,False,6,[]))
 		#ligne 3
-		self.plateau.setVal(4,0,Carte(False,False,False,True,6,[]))
-		self.plateau.setVal(4,2,Carte(False,False,True,False,7,[]))
-		self.plateau.setVal(4,4,Carte(False,True,False,False,8,[]))
-		self.plateau.setVal(4,6,Carte(False,True,False,False,9,[]))
+		self.plateau.setVal(4,0,Carte(False,False,False,True,7,[]))
+		self.plateau.setVal(4,2,Carte(False,False,True,False,8,[]))
+		self.plateau.setVal(4,4,Carte(False,True,False,False,9,[]))
+		self.plateau.setVal(4,6,Carte(False,True,False,False,10,[]))
 		# ligne 4
 		self.plateau.setVal(6,0,Carte(False,False,True,True,0,[3] if self.getNbJoueurs()>=3 else []))
-		self.plateau.setVal(6,2,Carte(False,True,False,False,10,[]))
-		self.plateau.setVal(6,4,Carte(False,True,False,False,11,[]))
+		self.plateau.setVal(6,2,Carte(False,True,False,False,11,[]))
+		self.plateau.setVal(6,4,Carte(False,True,False,False,12,[]))
 		self.plateau.setVal(6,6,Carte(False,True,True,False,0,[4] if self.getNbJoueurs()==4 else []))
 
 
@@ -77,7 +77,7 @@ class Labyrinthe():
 		
 		# Création des cartes amovibles
 
-		listeCartesAmovibles,carteAmovible2 = self.creerCartesAmovibles(12)
+		listeCartesAmovibles,carteAmovible2 = self.creerCartesAmovibles(13)
 		k = 0
 		for i in range(7):
 			for j in range(7):
@@ -318,9 +318,8 @@ class Labyrinthe():
 	# si c'est le cas la fonction retourne une liste représentant un chemin possible
 	# sinon ce n'est pas le cas, la fonction retourne None
 	def accessibleDistJoueurCourant(self, ligA,colA):
-		if self.getCoordonneesJoueurCourant() == None:
-			chemin = None
-		else:
+		chemin = None
+		if self.getCoordonneesJoueurCourant() != None:
 			x, y = self.getCoordonneesJoueurCourant()
 			chemin = self.accessibleDist(x, y, ligA, colA)
 		return chemin
@@ -337,9 +336,10 @@ class Labyrinthe():
 			self.joueurCourantTrouveTresor()
 			if self.joueurs[self.joueurCourant].prochainTresor() == None:
 				coderetour = 2
-			self.changerJoueurCourant()
-			self.changerPhase()
-			coderetour = 1
+			else:
+				self.changerJoueurCourant()
+				self.changerPhase()
+				coderetour = 1
 		else:
 			self.changerPhase()
 			self.changerJoueurCourant()

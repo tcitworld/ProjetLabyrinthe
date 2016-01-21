@@ -296,7 +296,8 @@ class LabyrintheGraphique(object):
                             t=self.labyrinthe.getTresorCourant()
                             if c.getTresor()==t:
                                 c.prendreTresor()
-                                if self.labyrinthe.joueurCourantTrouveTresor()==0:
+                                self.labyrinthe.getLesJoueurs()[self.labyrinthe.getJoueurCourant()-1].tresorTrouve()
+                                if self.labyrinthe.getLesJoueurs()[self.labyrinthe.getJoueurCourant()-1].prochainTresor()==None:
                                     self.messageInfo="Le joueur @img@ a gagné"
                                     self.imgInfo=[self.surfacePion(jc)]
                                     self.fini=True

@@ -94,7 +94,7 @@ class Joueurs(object):
 			n = self.nbTresorMax if self.nbTresorMax != 0 else (self.nbTresors // len(self.listeJoueurs))
 			j = 0
 			while (j < n):
-				idTresorADistribuer = random.randint(0, self.nbTresors - 1)
+				idTresorADistribuer = random.randint(1, self.nbTresors - 1)
 				if (idTresorADistribuer not in listeTresorsDejaDistribues):
 					listeTresorsDejaDistribues.add(idTresorADistribuer)
 					self.listeJoueurs[i].setTresor(idTresorADistribuer)
