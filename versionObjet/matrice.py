@@ -67,7 +67,7 @@ class Matrice(object):
 		return valeurEjectee
 	
 	def decalageColonneEnHaut(self, numCol, nouvelleValeur = 0):
-		valeurEjectee = self .getVal(0, numCol)
+		valeurEjectee = self.getVal(0, numCol)
 		
 		for i in range(self.getNbLignes() - 1):
 			valeurACopier = self.getVal(i + 1, numCol)

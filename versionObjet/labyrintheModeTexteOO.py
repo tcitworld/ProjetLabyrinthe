@@ -93,7 +93,7 @@ class LabyrintheModeTexte(object):
         
         ordre,x,y = None,None,None
         while ordre not in ['T','N','E','S','O']:
-            ordre = input("Quel ordre ?")
+            ordre = input("Quel ordre ?").upper()
             if ordre == 'T':
                 x = 'T'
             elif ordre in ['N','E','S','O']:

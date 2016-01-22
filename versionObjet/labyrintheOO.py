@@ -27,7 +27,7 @@ dictionnaire
 # à chaque joueur en restant équitable
 # un joueur courant est choisi et la phase est initialisée$
 class Labyrinthe():
-	def __init__(self,nbJoueurs,nbTresors=24, nbTresorMax=1):
+	def __init__(self,nbJoueurs,nbTresors=24, nbTresorMax=4):
 		self.nbTresors = nbTresors
 		self.nbTresorMax = nbTresorMax
 		self.joueurs = Joueurs(nbJoueurs, self.nbTresors, self.nbTresorMax)
@@ -35,7 +35,7 @@ class Labyrinthe():
 		self.plateau = Matrice(7, 7)
 		
 		# Initialisation des joueurs aux 4 coins du jeu
-		if 1 < self.getNbJoueurs() < 5:
+		if self.getNbJoueurs() > 1 and self.getNbJoueurs() < 5:
 			self.joueurs.listeJoueurs[0].setPosition((0,0))
 			self.joueurs.listeJoueurs[1].setPosition((0,6))
 			if self.getNbJoueurs() >= 3:

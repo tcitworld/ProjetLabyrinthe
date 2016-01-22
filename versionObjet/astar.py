@@ -158,7 +158,6 @@ def drawMat(matrice,tailleCellule=4):
 	for i in range(nbLignes):
 		print(str(i).rjust(tailleCellule)+'|',end='')
 		for j in range(nbColonnes):
-			#print(str(matrice.getVal(i,j)).rjust(tailleCellule)+'|',end='')
 			dN = "N" if matrice.getVal(i,j).murNord() == False else "-"
 			dE = "E" if matrice.getVal(i,j).murEst() == False else "-"
 			dS = "S" if matrice.getVal(i,j).murSud() == False else "-"

@@ -179,7 +179,6 @@ class LabyrintheGraphique(object):
         (xp,yp)=chemin.pop(0)
         for (x,y) in chemin:
             prendrePionL(self.labyrinthe,xp,yp,joueur)
-            print('je mets pion en (',x,',',y,')')
             mettrePionL(self.labyrinthe,x,y,joueur)
             self.afficheJeu()
             time.sleep(pause)
@@ -211,7 +210,6 @@ class LabyrintheGraphique(object):
         self.dessineGrille()
         self.afficheGrille()
         if not self.fini:
-            #print(getJoueurCourant(self.labyrinthe))
             self.afficheMessage(2,"C'est au joueur @img@ de jouer. Trésor à trouver @img@",[self.surfacePion(getJoueurCourant(self.labyrinthe)),self.surfaceTresor(getTresorCourant(self.labyrinthe))])
         self.afficheScore(3)
         self.afficheMessageInfo(4)
@@ -236,12 +234,8 @@ class LabyrintheGraphique(object):
                 if self.fini:
                     continue
                 (x,y)=self.getCase(ev.pos)
-                print('getCase() :', (x,y))
-                print('lt =', getLesJoueurs(self.labyrinthe)[getJoueurCourant(self.labyrinthe) - 1]["trésors"])
-                print('tc =', getLesJoueurs(self.labyrinthe)[getJoueurCourant(self.labyrinthe) - 1]["trésors"][0])
                 if getPhase(self.labyrinthe)==1:
                     res=executerActionPhase1(self.labyrinthe,x,y)
-                    print('executerActionPhase1() :', res)
                     if res==0:
                         self.messageInfo="La carte a été tournée"
                         self.imgInfo=[]

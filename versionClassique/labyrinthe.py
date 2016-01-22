@@ -30,7 +30,7 @@ def Labyrinthe(nbJoueurs=2,nbTresors=24, nbTresorMax=0):
 	joueurs = Joueurs(nbJoueurs, nbTresors, nbTresorMax)
 	plateau = Matrice(7, 7)
 	
-	if 1 < len(joueurs) < 5:
+	if len(joueurs) > 1 and len(joueurs) < 5:
 		joueurs[0]['position'] = (0,0)
 		joueurs[1]['position'] = (0,6)
 		if len(joueurs) >= 3:
@@ -86,10 +86,7 @@ def Labyrinthe(nbJoueurs=2,nbTresors=24, nbTresorMax=0):
 	
 	joueurCourant = 1
 	phaseCourante = 1
-	
-	print(tresors)
-	print(tresorsPos)
-	
+		
 	return {"joueurs" : joueurs, "nbJoueurs" : len(joueurs), "plateau" : plateau, "trésors" : tresors, "nbTrésors" : len(tresors), "joueurCourant" : joueurCourant, "phaseCourante" : phaseCourante, "carteAmovible" : carteAmovible, "directionInterdite" : None, "rangéeInterdite": None, "tresorsPos" : tresorsPos}
 
 # retourne la matrice représentant le plateau de jeu
@@ -169,6 +166,7 @@ def creerCartesAmovibles(tresorDebut,nbTresors):
 	
 	# les cartes amovibles aléatoires doivent respecter les règles suivantes
 	# pas de cartes à 4 murs
+	# pas de cartes à 3 murs
 	# pas de cartes à 0 murs
 	# donc les cartes doivent avoir entre 1 et 2 murs
 	

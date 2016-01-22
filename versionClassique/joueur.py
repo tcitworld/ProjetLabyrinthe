@@ -20,7 +20,6 @@ def initTresor(joueurs, nbTresors, nbTresorMax):
 					listeTresorsDejaDistribues.append(idTresorADistribuer)
 					joueurs[i-1]["trésors"].append(idTresorADistribuer)
 					j += 1
-	print('')
 
 # permet de créer entre deux et quatre joueurs et leur distribue de manière équitable
 # les trésors compris entre 1 et nbTresor avec au plus nbMaxTresor chacun
@@ -53,7 +52,6 @@ def prochainTresor(joueurs,numJoueur):
 
 # retourne le nombre de trésors qu'il reste à trouver pour le joueur numJoueur
 def nbTresorsRestants(joueurs,numJoueur):
-	#print(numJoueur)
 	nbTres = 0
 	for joueur in joueurs:
 		if joueur['idJoueur'] == numJoueur:

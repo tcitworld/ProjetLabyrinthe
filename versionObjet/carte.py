@@ -67,7 +67,6 @@ class Carte:
      
     # retourne la valeur du trésor qui se trouve sur la carte (0 si pas de trésor)
     def getTresor(self):
-        #print('carte',c)
         return self.tresor if self.tresor != None else 0
      
     # enlève le trésor qui se trouve sur la carte et retourne la valeur de ce trésor
@@ -119,7 +118,6 @@ class Carte:
     # le code obtenu permet d'obtenir l'indice du caractère semi-graphique
     # correspondant à la carte dans la liste listeCartes au début de ce fichier
     def coderMurs(self):
-        #print(int(c['direction'][3]),int(c['direction'][2]),int(c['direction'][1]),int(c['direction'][0]))
         return int(str(int(self.ouest))+str(int(self.sud))+str(int(self.est))+str(int(self.nord)),2)
      
     # positionne les mur d'une carte en fonction du code décrit précédemment
@@ -131,7 +129,6 @@ class Carte:
            
     # fournit le caractère semi graphique correspondant à la carte (voir la variable listeCartes au début de ce script)
     def toChar(self):
-        #print(int(coderMurs(c),2))
         return self.listeCartes[self.coderMurs()]
      
     # suppose que la carte2 est placée au nord de la carte1 et indique

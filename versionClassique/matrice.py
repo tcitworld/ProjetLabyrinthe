@@ -87,7 +87,6 @@ def decalageLigneADroite(matrice, numLig, nouvelleValeur=0):
         nouvelleVal=getVal(matrice,numLig,i-1)
         setVal(matrice,numLig,i,nouvelleVal)
     setVal(matrice,numLig,0,nouvelleValeur)
-    #print(matrice)#pour voir ma matrice apres le changement
     return valeurRecup
 
 # decale la colonne numCol d'une case vers le haut en insérant la nouvelleValeur

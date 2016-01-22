@@ -67,7 +67,6 @@ def setPions(c,pions):
  
 # retourne la valeur du trésor qui se trouve sur la carte (0 si pas de trésor)
 def getTresor(c):
-    #print('carte',c)
     return c.get('tresor',0)
  
 # enlève le trésor qui se trouve sur la carte et retourne la valeur de ce trésor
@@ -94,7 +93,6 @@ def poserPion(c, pion):
  
 # fait tourner la carte dans le sens horaire
 def tournerHoraire(c):
-    print('tourne')
     c['direction'].insert(0,c['direction'][3])
     c['direction'].pop(-1)
    
@@ -116,7 +114,6 @@ def tourneAleatoire(c):
 # le code obtenu permet d'obtenir l'indice du caractère semi-graphique
 # correspondant à la carte dans la liste listeCartes au début de ce fichier
 def coderMurs(c):
-    #print(int(c['direction'][3]),int(c['direction'][2]),int(c['direction'][1]),int(c['direction'][0]))
     return int(str(int(c['direction'][3]))+str(int(c['direction'][2]))+str(int(c['direction'][1]))+str(int(c['direction'][0])),2)
  
 # positionne les mur d'une carte en fonction du code décrit précédemment
@@ -126,7 +123,6 @@ def decoderMurs(c,code):
        
 # fournit le caractère semi graphique correspondant à la carte (voir la variable listeCartes au début de ce script)
 def toChar(c):
-    #print(int(coderMurs(c),2))
     return listeCartes[coderMurs(c)]
  
 # suppose que la carte2 est placée au nord de la carte1 et indique

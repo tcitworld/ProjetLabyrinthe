@@ -110,14 +110,16 @@ def animationChemin(lmt,chemin, joueur,pause=0.1):
 # dans le cas où x vaut une des quatre autres valeur, y doit valoir 1, 3 ou 5
 # c'est à dire le numéro de la ligne ou de la colonne où insérer la carte
 def saisirOrdre(lmt):
-    ordre,x,y = None,None,None
-    while ordre not in ['T','N','E','S','O']:
-        ordre = input("Quel ordre ?")
+    ordre,rangee,x,y = None,None,None,None
+    while ordre not in ['T','N','E','S','O'] and type(y) != 'int':
+        ordre = input("Quel ordre ?").upper()
         if ordre == 'T':
             x = 'T'
         elif ordre in ['N','E','S','O']:
             x = ordre
-            y = int(input("rangée ?"))
+            rangee = input("rangée ?")
+            if rangee.isdigit():
+                y = int(rangee)
     return (x,y)
  
 # permet de saisir les coordonées de la case de destination choisie par le joueur courant
@@ -126,7 +128,7 @@ def saisirOrdre(lmt):
 # destination qu'il a choisi
 def saisirDeplacement(lmt):
     ligA,colA,possible = 8,8,None
-    print("Vous êtes en", getCoordonneesJoueurCourant(labyrinthe))
+    print("Vous êtes en", getCoordonneesJoueurCourant(getLabyrinthe(lmt)))
     while (possible == None) or (ligA > 7 or ligA < 0) or (colA > 7 or colA < 0):
         ligA = int(input("coordonées x de la case de destination"))
         colA = int(input("coordonées y de la case de destination"))
